@@ -1,13 +1,9 @@
 services: 
         studentapp: 
             build: .
-            context: ./studentapp
-            dockerfile: Dockerfile
             ports:
                 - "8080:8080" 
         sample:
             build: .
-            context: ./sample
-            dockerfile: Dockerfile
             ports:
                 - "80:80"
