@@ -1,7 +1,7 @@
 FROM ubuntu:latest 
 #base image used as ubuntu 
 
-LABEL dev="akash"  
+LABEL dev="anup"  
 #keyvalue tags and labels 
 
 #executed commands in the dockerfile
@@ -26,3 +26,11 @@ EXPOSE 80
 #command to run the apache server in foreground mode
 #CMD ["httpd-foreground"]
 CMD ["apache2ctl", "-D", "FOREGROUND"]
+
+
+
+
+
+
+
+
