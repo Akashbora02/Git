@@ -8,13 +8,13 @@ services:
             ports:
                 - "80:80"
         frontend: 
-            build: ./frontend
+            build: ./todo-app/frontend
             ports:
                 - "3000:80"
             depends_on:
                 - backend
         
         backend:
-            build: ./backend
+            build: ./todo-app/backend
             ports:
                 - "3001-3001"
