@@ -1,9 +1,9 @@
 services: 
         studentapp: 
-            build: .
+            build: ./studentapp
             ports:
                 - "8080:8080" 
         sampledockerfile: 
-            build: .
+            build: ./sampledockerfile
             ports:
                 - "80:80"
