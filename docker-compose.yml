@@ -6,15 +6,15 @@ services:
         sampledockerfile: 
             build: ./sampledockerfile
             ports:
-                - "3000:3000"
-        todo-app: 
-            build: ./todo-app/frontend
-            ports:
                 - "80:80"
-            depends_on:
-                - backend
+#        todo-app: 
+#            build: ./todo-app/frontend
+ #           ports:
+  #              - "80:80"
+   #         depends_on:
+    #            - backend
         
-        backend:
-            build: ./todo-app/backend
-            ports:
-                - "3001-3001"
+     #   backend:
+      #      build: ./todo-app/backend
+       #     ports:
+        #        - "3001-3001"
