@@ -7,7 +7,7 @@ services:
             build: ./sampledockerfile
             ports:
                 - "80:80"
-        Todo-App-React-FE-Node.js-BE-MySQL-Docker: 
-            build: ./Todo-App-React-FE-Node.js-BE-MySQL-Docker/todo-app/frontend
+        todo-app: 
+            build: ./todo-app/todo-app/frontend
             ports:
                 - "5000:5000"
