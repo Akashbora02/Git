@@ -1,7 +1,7 @@
 FROM ubuntu:22.04 
 #base image 
 
-LABEL DEV="anup" 
+LABEL DEV="akash" 
 
 RUN apt-get update -y && \
     apt-get install unzip openjdk-11-jdk -y       
