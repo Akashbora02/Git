@@ -8,6 +8,6 @@ services:
             ports:
                 - "80:80"
         todo-app: 
-            build: ./todo-app
+            build: ./todo-app/todo-app/frontend
             ports:
                 - "5000:5000"
