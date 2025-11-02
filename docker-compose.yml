@@ -10,7 +10,7 @@ services:
         todo-app: 
             build: ./todo-app/frontend
             ports:
-                - "80:5000"
+                - "3000:80"
    #         depends_on:
     #            - backend
         
