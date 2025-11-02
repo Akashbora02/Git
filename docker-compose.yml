@@ -9,7 +9,7 @@ services:
                 - "80:80"
         todo-app: 
             build:
-            context: ./todo-app
+                context: ./todo-app
             dockerfile: /todo-app/frontend/Dockerfile.dev
             ports:
                 - "5000:5000"
