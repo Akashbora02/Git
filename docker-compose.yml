@@ -7,8 +7,7 @@ services:
             build: ./sampledockerfile
             ports:
                 - "80:80"
-        todo-app: 
-            build:
-                context: ./todo-app/todo-app/frontend
-            ports:
-                - "5000:5000"
+#        todo-app: 
+ #           build: ./todo-app/todo-app/frontend
+  #          ports:
+   #             - "5000:5000"
