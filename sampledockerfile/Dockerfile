@@ -1,4 +1,4 @@
-FROM ubuntu:latest 
+FROM ubuntu:22.04 
 #base image used as ubuntu 
 
 LABEL dev="anup"  
