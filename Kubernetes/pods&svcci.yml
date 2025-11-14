@@ -7,7 +7,7 @@ metadata:
 spec:
   containers:
     - image:  nginx
-      name:  my-nginx-pod
+      name:  my-podci
       ports:
         - containerPort:  80
 
