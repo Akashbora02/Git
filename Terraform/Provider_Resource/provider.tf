@@ -1,3 +1,3 @@
 provider "aws" {
-    profile = "configs"
+  profile = "configs"
 }
