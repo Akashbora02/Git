@@ -8,46 +8,38 @@ resource "aws_instance" "webserver" {
 #              file("${path.module}/user_data.sh")
 
   user_data = <<-EOF
-                  #!/bin/bash
-                  sudo yum update -y
-                  sudo yum install -y httpd
-                  sudo systemctl enable httpd
-                  sudo systemctl start httpd
-                  cat <<HTML > /var/www/html/index.html
-                  <!DOCTYPE html>
-                  <html>
-                  <head>
-                    <title>My Custom Terraform Page</title>
+              #!/bin/bash
+              sudo apt update -y
+              sudo apt install -y nginx
+              sudo systemctl enable nginx
+              sudo systemctl start nginx
+                cat <<HTML > /var/www/html/index.html
+                <!DOCTYPE html>
+                <html>
+                <head>
+                    <title>Welcome to My EC2 Nginx Server</title>
                     <style>
-                      body {
-                        font-family: Arial, sans-serif;
-                        background: #f4f4f4;
-                        text-align: center;
-                        padding: 50px;
-                      }
-                      .container {
-                        background: white;
-                        padding: 30px;
-                        border-radius: 10px;
-                        box-shadow: 0 0 10px rgba(0,0,0,0.1);
-                        display: inline-block;
-                      }
-                      h1 {
-                        color: #333;
-                      }
-                      p {
-                        color: #555;
-                      }
+                        body {
+                            background-color: #f4f4f9;
+                            font-family: Arial, sans-serif;
+                            text-align: center;
+                            padding: 50px;
+                        }
+                        h1 {
+                            color: #2e86c1;
+                        }
+                        p {
+                            font-size: 18px;
+                            color: #555;
+                        }
                     </style>
-                  </head>
-                  <body>
-                    <div class="container">
-                      <h1>Welcome to My Custom Web Page!</h1>
-                      <p>This page was deployed automatically using Terraform 🚀</p>
-                    </div>
-                  </body>
-                  </html>
-                  HTML
+                </head>
+                <body>
+                    <h1>🚀 Hello from EC2 + Nginx!</h1>
+                    <p>This page is served by <b>Nginx</b> running on an Amazon EC2 instance.</p>
+                </body>
+                </html>
+                HTML
             EOF
 }
 
