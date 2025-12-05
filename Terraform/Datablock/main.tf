@@ -8,10 +8,8 @@ resource "aws_instance" "webserver" {
 
   user_data = <<-EOF
               #!/bin/bash
-              yum update -y
-              yum install -y nginx
-              systemctl enable --now nginx
-              systemctl start nginx
+              sudo yum update -y
+              sudo yum install -y nginx
               cat <<HTML > /var/www/html/index.html
                 <!DOCTYPE html>
                 <html>
@@ -39,6 +37,8 @@ resource "aws_instance" "webserver" {
                 </body>
                 </html>
                 HTML
+                systemctl enable --now nginx
+                systemctl start nginx
             EOF
 }
 
