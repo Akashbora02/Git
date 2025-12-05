@@ -6,8 +6,8 @@ resource "aws_instance" "webserver" {
   #  count                   = var.webserver_count
   disable_api_termination = var.webserver_disable_api_termination
 
+#              file("${path.module}/user_data.sh")
   user_data = <<-EOF
-              file("${path.module}/user_data.sh")
               #!/bin/bash
               sudo apt-get update -y
               sudo apt-get install -y nginx
