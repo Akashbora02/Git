@@ -11,6 +11,6 @@ output "webserver_ami_id" {
   value = data.aws_ami.myami.id
 }
 
-output "webserver_sg_id" {
-  value = data.aws_security_group.webserver_my_sg.id
-}
+#output "webserver_sg_id" {
+#  value = data.aws_security_group.webserver_my_sg.id
+#}
