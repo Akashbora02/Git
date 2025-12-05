@@ -8,5 +8,5 @@ output "webserver_privateip" {
   value = aws_instance.webserver.private_ip
 }
 output "webserver_sg_id" {
-  value = data.aws_ami.my_ami.id
+  value = data.aws_ami.myami.id
 }
