@@ -5,17 +5,17 @@ resource "aws_instance" "webserver" {
   vpc_security_group_ids = [var.webserver_vpc_security_group_ids] #, aws_security_group.webserver_sg.id , data.aws_security_group.webserver_my_sg.id
   #  count                   = var.webserver_count
   disable_api_termination = var.webserver_disable_api_termination
-  user_data = <<-EOF
+  user_data = <<EOF
               #!/bin/bash
-              sudo dnf update -y
-              sudo dnf install -y httpd
-              sudo systemctl enable --now httpd
-              sudo systemctl start httpd
-                cat <<HTML > /var/www/html/index.html
+              yum update -y
+              yum install -y nginx
+              systemctl enable --now nginx
+              systemctl start nginx
+              cat <<'HTML' > /var/www/html/index.html
                 <!DOCTYPE html>
                 <html>
                 <head>
-                    <title>Welcome to My EC2 Httpd Server</title>
+                    <title>Welcome to My EC2 nginx Server</title>
                     <style>
                         body {
                             background-color: #f4f4f9;
@@ -33,7 +33,7 @@ resource "aws_instance" "webserver" {
                     </style>
                 </head>
                 <body>
-                    <h1>🚀 Hello from EC2 + Httpd!</h1>
+                    <h1>🚀 Hello from EC2 + nginx!</h1>
                     <p>This page is served by <b>Nginx</b> running on an Amazon EC2 instance.</p>
                 </body>
                 </html>
