@@ -7,6 +7,7 @@ resource "aws_instance" "webserver" {
   disable_api_termination = var.webserver_disable_api_termination
 
   user_data = <<-EOF
+              file("${path.module}/user_data.sh")
               #!/bin/bash
               sudo yum update -y
               sudo yum install -y httpd
