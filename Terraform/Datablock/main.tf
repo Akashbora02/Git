@@ -9,34 +9,42 @@ resource "aws_instance" "webserver" {
   user_data = <<-EOF
               file("${path.module}/user_data.sh")
               #!/bin/bash
-              sudo yum update -y
-              sudo yum install -y httpd
+              sudo apt update -y
+              sudo apt install -y httpd
               sudo systemctl enable httpd
               sudo systemctl start httpd
               cat <<HTML > /var/www/html/index.html
               <!DOCTYPE html>
               <html>
               <head>
-                  <title>Welcome to My EC2 httpd Server</title>
-                  <style>
-                      body {
-                          background-color: #f4f4f9;
-                          font-family: Arial, sans-serif;
-                          text-align: center;
-                          padding: 50px;
-                      }
-                      h1 {
-                          color: #2e86c1;
-                      }
-                      p {
-                          font-size: 18px;
-                          color: #555;
-                      }
-                  </style>
+                <title>My Custom Terraform Page</title>
+                <style>
+                  body {
+                    font-family: Arial, sans-serif;
+                    background: #f4f4f4;
+                    text-align: center;
+                    padding: 50px;
+                  }
+                  .container {
+                    background: white;
+                    padding: 30px;
+                    border-radius: 10px;
+                    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+                    display: inline-block;
+                  }
+                  h1 {
+                    color: #333;
+                  }
+                  p {
+                    color: #555;
+                  }
+                </style>
               </head>
               <body>
-                  <h1>🚀 Hello from EC2 + Nginx!</h1>
-                  <p>This page is served by <b>Nginx</b> running on an Amazon EC2 instance.</p>
+                <div class="container">
+                  <h1>Welcome to My Custom Web Page!</h1>
+                  <p>This page was deployed automatically using Terraform 🚀</p>
+                </div>
               </body>
               </html>
               HTML
