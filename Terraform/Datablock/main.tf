@@ -2,7 +2,7 @@ resource "aws_instance" "webserver" {
   ami                    = data.aws_ami.myami.id
   instance_type          = var.webserver_instance_type
   key_name               = var.webserver_key_name
-  vpc_security_group_ids = [var.webserver_vpc_security_group_ids, aws_security_group.webserver_sg.id , data.aws_security_group.webserver_my_sg.id]
+  vpc_security_group_ids = [var.webserver_vpc_security_group_ids] #, aws_security_group.webserver_sg.id , data.aws_security_group.webserver_my_sg.id
   #  count                   = var.webserver_count
   disable_api_termination = var.webserver_disable_api_termination
 
@@ -13,9 +13,7 @@ resource "aws_instance" "webserver" {
               sudo systemctl enable nginx
               sudo systemctl start nginx
               echo "<h1>Welcome to Nginx</h1>" > /var/www/html/index.html
-      EOF
-
-
+              EOF
 }
 
 resource "aws_security_group" "webserver_sg" {
