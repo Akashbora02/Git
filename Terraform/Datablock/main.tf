@@ -1,5 +1,5 @@
 resource "aws_instance" "webserver" {
-  ami                    = data.aws_ami.myami.id
+  ami                    = var.webserver_ami
   instance_type          = var.webserver_instance_type
   key_name               = var.webserver_key_name
   vpc_security_group_ids = [var.webserver_vpc_security_group_ids] #, aws_security_group.webserver_sg.id , data.aws_security_group.webserver_my_sg.id
