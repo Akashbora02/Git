@@ -7,6 +7,10 @@ output "webserver_publicdns" {
 output "webserver_privateip" {
   value = aws_instance.webserver.private_ip
 }
-output "webserver_sg_id" {
+output "webserver_ami_id" {
   value = data.aws_ami.myami.id
+}
+
+output "webserver_sg_id" {
+  value = data.aws_security_group.webserver_my_sg.id
 }
