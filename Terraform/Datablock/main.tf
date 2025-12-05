@@ -5,13 +5,14 @@ resource "aws_instance" "webserver" {
   vpc_security_group_ids = [var.webserver_vpc_security_group_ids] #, aws_security_group.webserver_sg.id , data.aws_security_group.webserver_my_sg.id
   #  count                   = var.webserver_count
   disable_api_termination = var.webserver_disable_api_termination
-  user_data = <<EOF
+
+  user_data = <<-EOF
               #!/bin/bash
               yum update -y
               yum install -y nginx
               systemctl enable --now nginx
               systemctl start nginx
-              cat <<'HTML' > /var/www/html/index.html
+              cat <<HTML > /var/www/html/index.html
                 <!DOCTYPE html>
                 <html>
                 <head>
