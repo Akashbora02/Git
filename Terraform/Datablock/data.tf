@@ -1,9 +1,9 @@
 data "aws_ami" "my_ami" {
     most_recent = true
-      owners      = ["813592692089"] # Canonical
+    owners      = ["813592692089"] # Canonical
       filter {
         name   = "name"
-        values = ["Amazon Linux 2023 AMI 2023.9.20251117.1 x86_64 HVM kernel-6.1"]
+        values = ["ami-0fa3fe0fa7920f68e"]
       }
       filter {
         name   = "virtualization-type"
