@@ -9,36 +9,36 @@ resource "aws_instance" "webserver" {
   user_data = <<-EOF
               #!/bin/bash
               sudo yum update -y
-              sudo yum install -y nginx
-              sudo systemctl enable nginx
-              sudo systemctl start nginx
+              sudo yum install -y httpd
+              sudo systemctl enable httpd
+              sudo systemctl start httpd
               cat <<EOF > /var/www/html/index.html
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Welcome to My EC2 Nginx Server</title>
-    <style>
-        body {
-            background-color: #f4f4f9;
-            font-family: Arial, sans-serif;
-            text-align: center;
-            padding: 50px;
-        }
-        h1 {
-            color: #2e86c1;
-        }
-        p {
-            font-size: 18px;
-            color: #555;
-        }
-    </style>
-</head>
-<body>
-    <h1>🚀 Hello from EC2 + Nginx!</h1>
-    <p>This page is served by <b>Nginx</b> running on an Amazon EC2 instance.</p>
-</body>
-</html>
-              EOF
+              <!DOCTYPE html>
+              <html>
+              <head>
+                  <title>Welcome to My EC2 httpd Server</title>
+                  <style>
+                      body {
+                          background-color: #f4f4f9;
+                          font-family: Arial, sans-serif;
+                          text-align: center;
+                          padding: 50px;
+                      }
+                      h1 {
+                          color: #2e86c1;
+                      }
+                      p {
+                          font-size: 18px;
+                          color: #555;
+                      }
+                  </style>
+              </head>
+              <body>
+                  <h1>🚀 Hello from EC2 + Nginx!</h1>
+                  <p>This page is served by <b>Nginx</b> running on an Amazon EC2 instance.</p>
+              </body>
+              </html>
+          EOF
 }
 
 #resource "aws_security_group" "webserver_sg" {
