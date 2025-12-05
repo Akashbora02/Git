@@ -15,6 +15,6 @@ data "aws_ami" "myami" {
 #  name = "launch-wizard-4"
 #}
 
-data "aws_instance" "webserver_instance_id" {
-  instance_id = "i-08390d581966c0a44"
-}
+#data "aws_instance" "webserver_instance_id" {
+#  instance_id = "i-08390d581966c0a44"
+#}
