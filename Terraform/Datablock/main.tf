@@ -6,14 +6,16 @@ resource "aws_instance" "webserver" {
   #  count                   = var.webserver_count
   disable_api_termination = var.webserver_disable_api_termination
 
-  user_data = <<-EOF  
-                #!/bin/bash
-                sudo yum update -y
-                sudo yum install -y nginx
-                sudo systemctl enable nginx
-                sudo systemctl start nginx
-                echo "<h1>Welcome to Nginx</h1>" > /var/www/html/index.html
-                EOF
+  user_data = <<-EOF
+              #!/bin/bash
+              sudo yum update -y
+              sudo yum install -y nginx
+              sudo systemctl enable nginx
+              sudo systemctl start nginx
+              echo "<h1>Welcome to Nginx</h1>" > /var/www/html/index.html
+      EOF
+
+
 }
 
 resource "aws_security_group" "webserver_sg" {
