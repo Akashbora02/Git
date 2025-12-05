@@ -6,13 +6,13 @@ resource "aws_instance" "webserver" {
   #  count                   = var.webserver_count
   disable_api_termination = var.webserver_disable_api_termination
 
-#              file("${path.module}/user_data.sh")
   user_data = <<-EOF
+              file("${path.module}/user_data.sh")
               #!/bin/bash
-              sudo apt-get update -y
-              sudo apt-get install -y nginx
-              sudo systemctl enable nginx
-              sudo systemctl start nginx
+              sudo yum update -y
+              sudo yum install -y httpd
+              sudo systemctl enable httpd
+              sudo systemctl start httpd
               cat <<HTML > /var/www/html/index.html
               <!DOCTYPE html>
               <html>
