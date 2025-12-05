@@ -12,7 +12,7 @@ resource "aws_instance" "webserver" {
               sudo yum install -y httpd
               sudo systemctl enable httpd
               sudo systemctl start httpd
-              cat <<EOF > /var/www/html/index.html
+              cat <<HTML > /var/www/html/index.html
               <!DOCTYPE html>
               <html>
               <head>
@@ -38,6 +38,7 @@ resource "aws_instance" "webserver" {
                   <p>This page is served by <b>Nginx</b> running on an Amazon EC2 instance.</p>
               </body>
               </html>
+              HTML
           EOF
 }
 
