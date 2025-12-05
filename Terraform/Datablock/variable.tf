@@ -1,5 +1,5 @@
 variable "webserver_ami" {
-  default = "ami-0fa3fe0fa7920f68e"
+  default = "ami-0f00d706c4a80fd93"
 }
 variable "webserver_instance_type" {
   default = "t2.micro"

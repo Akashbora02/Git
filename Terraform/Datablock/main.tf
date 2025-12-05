@@ -16,29 +16,26 @@ user_data = <<-EOF
               <!DOCTYPE html>
               <html>
               <head>
-                  <title>EC2 Server Ready</title>
+                  <title>Welcome to My EC2 httpd Server</title>
                   <style>
                       body {
-                          background: linear-gradient(to bottom right, #4facfe, #00f2fe);
-                          font-family: 'Segoe UI', sans-serif;
+                          background-color: #f4f4f9;
+                          font-family: Arial, sans-serif;
                           text-align: center;
-                          color: white;
-                          padding-top: 80px;
+                          padding: 50px;
                       }
-                      .fade {
-                          animation: fadeIn 2s ease-in-out forwards;
-                          opacity: 0;
+                      h1 {
+                          color: #2e86c1;
                       }
-                      @keyframes fadeIn {
-                          to { opacity: 1; }
+                      p {
+                          font-size: 18px;
+                          color: #555;
                       }
                   </style>
               </head>
               <body>
-                  <h1 class="fade">✔ EC2 Web Server Deployed</h1>
-                  <p class="fade" style="animation-delay: 0.5s;">
-                      Provisioned automatically using Terraform + user_data
-                  </p>
+                  <h1>🚀 Hello from EC2 + Httpd!</h1>
+                  <p>This page is served by <b>Httpd</b> running on an Amazon EC2 instance.</p>
               </body>
               </html>
               HTML
