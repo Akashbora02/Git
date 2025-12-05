@@ -7,9 +7,9 @@ resource "aws_instance" "webserver" {
   disable_api_termination = var.webserver_disable_api_termination
   user_data = <<-EOF
               #!/bin/bash
-              sudo yum update -y
-              sudo yum install -y httpd
-              sudo systemctl enable httpd
+              sudo dnf update -y
+              sudo dnf install -y httpd
+              sudo systemctl enable --now httpd
               sudo systemctl start httpd
                 cat <<HTML > /var/www/html/index.html
                 <!DOCTYPE html>
