@@ -9,8 +9,8 @@ resource "aws_instance" "webserver" {
   user_data = <<-EOF
               file("${path.module}/user_data.sh")
               #!/bin/bash
-              sudo apt update -y
-              sudo apt install -y nginx
+              sudo apt-get update -y
+              sudo apt-get install -y nginx
               sudo systemctl enable nginx
               sudo systemctl start nginx
               cat <<HTML > /var/www/html/index.html
