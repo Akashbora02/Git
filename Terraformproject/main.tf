@@ -8,11 +8,11 @@ resource "aws_instance" "webserver" {
   user_data               = <<-EOF
   #!/bin/bash
      apt update -y
-     mkdir opt
-     cd opt/
+     mkdir mydir
+     cd mkdir/
      git clone https://github.com/Akashbora02/Git.git
-     cd opt/Git/studentapp/
-
+     cd mydir/Git/studentapp/
+     
      chmod 700 docker-install.sh
      sh docker-install.sh
      cd ..
