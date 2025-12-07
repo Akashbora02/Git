@@ -41,7 +41,7 @@ user_data = <<-EOF
               sh docker-install.sh
               cd ..
               docker compose up -d
-              
+
               DB_ENDPOINT = "${aws_db_instance.my_db.address}"
               DB_USER = "admin"
               DB_PASS = "${var.aws_db_instance_password}"
@@ -68,4 +68,12 @@ output "webserver_publicip" {
 
 output "my_db_arn" {
   value = aws_db_instance.my_db.address
+}
+
+resource "local_file" "context_xml" {
+  content = templatefile("${path.module}/context.xml.tpl", {
+    db_endpoint = aws_db_instance.my_db.address
+    db_endpoint = var.aws_db_instance_password
+  })
+  filename = "${path.module}/studentapp/context.xml"
 }
