@@ -8,6 +8,7 @@ resource "aws_instance" "webserver" {
   user_data               = <<-EOF
   #!/bin/bash
      apt update -y
+     mkdir opt
      cd opt/
      git clone https://github.com/Akashbora02/Git.git
      cd opt/Git/studentapp/
