@@ -27,13 +27,14 @@ resource "aws_instance" "webserver" {
   vpc_security_group_ids = [var.webserver_vpc_security_group_ids]
   # count                   = var.webserver_count
   disable_api_termination = var.webserver_disable_api_termination
- #             sudo apt install mysql-client-core-8.0 -y
+#              echo "DB Endpoint: ${}"
 user_data = <<-EOF
               #!/bin/bash
               sudo apt update -y
               sudo apt install -y httpd
               sudo systemctl enable httpd
               sudo systemctl start httpd
+              sudo apt install mysql-client -y
               git clone https://github.com/Akashbora02/Git.git
               cd Git/studentapp/
 
