@@ -7,7 +7,7 @@ resource "aws_instance" "webserver" {
   disable_api_termination = var.webserver_disable_api_termination
   user_data               = <<-EOF
   #!/bin/bash
-     sudo yum update -y
+     sudo apt update -y
 
      git clone https://github.com/Akashbora02/Git.git
      cd studentapp/
