@@ -73,7 +73,7 @@ output "my_db_arn" {
 resource "local_file" "context_xml" {
   content = templatefile("${path.module}/context.xml.tpl", {
     db_endpoint = aws_db_instance.my_db.address
-    db_endpoint = var.aws_db_instance_password
+    db_password = var.aws_db_instance_password
   })
   filename = "${path.module}/studentapp/context.xml"
 }
