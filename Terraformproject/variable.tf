@@ -16,3 +16,28 @@ variable "webserver_vpc_security_group_ids" {
 variable "webserver_disable_api_termination" {
   default = false
 }
+
+variable "aws_db_instance_db_name" {
+  default = "studentapp"
+}
+variable "aws_db_instance_engine" {
+  default = "mysql"
+}
+variable "aws_db_instance_engine_version" {
+  default = "8.0.43"
+}
+variable "aws_db_instance_identifier" {
+  default = "studentapp"
+}
+variable "aws_db_instance_instance_class" {
+  default = "db.t3.micro"
+}
+variable "aws_db_instance_username" {
+  default = "admin"
+}
+variable "aws_db_instance_password" {
+  default = "12345678"
+}
+variable "aws_db_instance_parameter_group_name" {
+  default = "default.mysql8.0"
+}

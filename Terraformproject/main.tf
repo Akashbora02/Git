@@ -22,6 +22,33 @@ user_data = <<-EOF
             EOF
 }
 
+resource "aws_db_subnet_group" "db_subnets" {
+  name       = "rds-subnet-group"
+  subnet_ids = ["subnet-0482a37ccc012331b", "subnet-0ec5c308d2f01e209", "subnet-0aad31b4c64afe074", "subnet-0c64b5c0a24ba3dac", "subnet-047a1f39a17928bfd", "subnet-0b790024640f0ad48"]
+  tags = {
+    Name = "MyDBSubnetGroup"
+  }
+}
+resource "aws_db_instance" "my_db" {
+  allocated_storage    = 10
+  db_name              = var.aws_db_instance_db_name
+  engine               = var.aws_db_instance_engine
+  engine_version       = var.aws_db_instance_engine_version
+  identifier           = var.aws_db_instance_identifier
+  instance_class       = var.aws_db_instance_instance_class
+  username             = var.aws_db_instance_username
+  password             = var.aws_db_instance_password
+  parameter_group_name = var.aws_db_instance_parameter_group_name
+  publicly_accessible  = true
+  db_subnet_group_name = aws_db_subnet_group.db_subnets.id
+  vpc_security_group_ids = [var.webserver_vpc_security_group_ids]
+  skip_final_snapshot  = true
+}
+
 output "webserver_publicip" {
   value = aws_instance.webserver.public_ip
+}
+
+output "my_db_arn" {
+  value = aws_db_instance.my_db.address
 }
