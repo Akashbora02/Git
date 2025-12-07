@@ -29,11 +29,11 @@ resource "aws_instance" "webserver" {
   disable_api_termination = var.webserver_disable_api_termination
 user_data = <<-EOF
               #!/bin/bash
-              sudo yum update -y
-              sudo yum install -y httpd
+              sudo apt update -y
+              sudo apt install -y httpd
               sudo systemctl enable httpd
               sudo systemctl start httpd
-              sudo yum install mysql-client-8.0 -y
+              sudo apt install mysql-client-8.0 -y
               git clone https://github.com/Akashbora02/Git.git
               cd Git/studentapp/
 
@@ -58,7 +58,7 @@ user_data = <<-EOF
               PRIMARY KEY (student_id)  
             );
             SQL            
-            EOF
+          EOF
 }
 
 
