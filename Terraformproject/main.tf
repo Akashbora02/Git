@@ -5,21 +5,21 @@ resource "aws_db_subnet_group" "db_subnets" {
     Name = "MyDBSubnetGroup"
   }
 }
-resource "aws_db_instance" "my_db" {
-  allocated_storage    = 10
-  db_name              = var.aws_db_instance_db_name
-  engine               = var.aws_db_instance_engine
-  engine_version       = var.aws_db_instance_engine_version
-  identifier           = var.aws_db_instance_identifier
-  instance_class       = var.aws_db_instance_instance_class
-  username             = var.aws_db_instance_username
-  password             = var.aws_db_instance_password
-  parameter_group_name = var.aws_db_instance_parameter_group_name
-  publicly_accessible  = true
-  db_subnet_group_name = aws_db_subnet_group.db_subnets.id
-  vpc_security_group_ids = [var.webserver_vpc_security_group_ids]
-  skip_final_snapshot  = true
-}
+#resource "aws_db_instance" "my_db" {
+#  allocated_storage    = 10
+#  db_name              = var.aws_db_instance_db_name
+#  engine               = var.aws_db_instance_engine
+#  engine_version       = var.aws_db_instance_engine_version
+#  identifier           = var.aws_db_instance_identifier
+#  instance_class       = var.aws_db_instance_instance_class
+#  username             = var.aws_db_instance_username
+#  password             = var.aws_db_instance_password
+#  parameter_group_name = var.aws_db_instance_parameter_group_name
+#  publicly_accessible  = true
+#  db_subnet_group_name = aws_db_subnet_group.db_subnets.id
+#  vpc_security_group_ids = [var.webserver_vpc_security_group_ids]
+#  skip_final_snapshot  = true
+#}
 resource "aws_instance" "webserver" {
   ami                    = var.webserver_ami
   instance_type          = var.webserver_instance_type
@@ -27,13 +27,13 @@ resource "aws_instance" "webserver" {
   vpc_security_group_ids = [var.webserver_vpc_security_group_ids]
   # count                   = var.webserver_count
   disable_api_termination = var.webserver_disable_api_termination
+ #             sudo apt install mysql-client-core-8.0 -y
 user_data = <<-EOF
               #!/bin/bash
               sudo apt update -y
               sudo apt install -y httpd
               sudo systemctl enable httpd
               sudo systemctl start httpd
-              sudo apt install mysql-client-core-8.0 -y
               git clone https://github.com/Akashbora02/Git.git
               cd Git/studentapp/
 
@@ -41,15 +41,14 @@ user_data = <<-EOF
               sh docker-install.sh
               cd ..
               docker compose up -d
-            EOF
+              EOF
 }
-
 
 output "webserver_publicip" {
   value = aws_instance.webserver.public_ip
 }
 
-output "my_db_arn" {
-  value = aws_db_instance.my_db.address
-}
+#output "my_db_arn" {
+#  value = aws_db_instance.my_db.address
+#}
 
