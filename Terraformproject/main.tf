@@ -7,10 +7,10 @@ resource "aws_instance" "webserver" {
   disable_api_termination = var.webserver_disable_api_termination
   user_data               = <<-EOF
   #!/bin/bash
-     sudo apt update -y
-
+     apt update -y
+     cd opt/
      git clone https://github.com/Akashbora02/Git.git
-     cd Git/studentapp/
+     cd opt/Git/studentapp/
 
      chmod 700 docker-install.sh
      sh docker-install.sh
