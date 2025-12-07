@@ -41,13 +41,9 @@ user_data = <<-EOF
               sh docker-install.sh
               cd ..
               docker compose up -d
-
-              DB_ENDPOINT = "${aws_db_instance.my_db.address}"
-              DB_USER = "admin"
-              DB_PASS = "${var.aws_db_instance_password}"
-              mysql -h $DB_ENDPOINT -u $DB_USER -p$DB_PASS -e "CREATE DATABASE studentapp;"
-
-              mysql -h $DB_ENDPOINT -u $DB_USER -p$DB_PASS studentapp <<SQL
+              mysql -h ${aws_db_instance.my_db.address} -u admin -p12345678 -e "CREATE DATABASE studentapp;"
+              
+              mysql -h ${aws_db_instance.my_db.address} -u admin -p12345678 studentapp <<SQL
               CREATE TABLE if not exists students(student_id INT NOT NULL AUTO_INCREMENT,  
               student_name VARCHAR(100) NOT NULL,  
               student_addr VARCHAR(100) NOT NULL,   
