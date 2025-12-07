@@ -41,7 +41,7 @@ user_data = <<-EOF
               sh docker-install.sh
               cd ..
               docker compose up -d
-              DB_ENDPOINT = "${aws_db_instance.mysql.address}"
+              DB_ENDPOINT = "${aws_db_instance.my_db.address}"
               DB_USER = "admin"
               DB_PASS = "${var.aws_db_instance_password}"
               mysql -h $DB_ENDPOINT -u $DB_USER -p$DB_PASS -e "CREATE DATABASE studentapp;"
