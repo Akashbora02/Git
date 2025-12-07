@@ -33,7 +33,7 @@ user_data = <<-EOF
               sudo apt install -y httpd
               sudo systemctl enable httpd
               sudo systemctl start httpd
-              sudo apt install mysql-client-8.0 -y
+              sudo apt install mysql-client-core-8.0 -y
               git clone https://github.com/Akashbora02/Git.git
               cd Git/studentapp/
 
@@ -56,7 +56,7 @@ user_data = <<-EOF
               student_percent VARCHAR(10) NOT NULL,   
               student_year_passed VARCHAR(10) NOT NULL,  
               PRIMARY KEY (student_id)  
-            );
+              );
             SQL            
           EOF
 }
