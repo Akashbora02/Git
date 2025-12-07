@@ -14,7 +14,7 @@ resource "aws_instance" "webserver" {
 
      chmod 700 docker-install.sh
      sh docker-install.sh
-
+     cd ..
      docker compose up -d
   EOF
 }
