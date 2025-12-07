@@ -11,6 +11,8 @@ user_data = <<-EOF
               sudo yum install -y httpd
               sudo systemctl enable httpd
               sudo systemctl start httpd
+              sudo yum install mysql-client-8.0 -y
+              mysql -h ${aws_db_instance.my_db.address} -u ${var.aws_db_instance_username} -p${var.aws_db_instance_password}
               git clone https://github.com/Akashbora02/Git.git
               cd Git/studentapp/
 
@@ -18,7 +20,6 @@ user_data = <<-EOF
               sh docker-install.sh
               cd ..
               docker compose up -d
-
             EOF
 }
 
