@@ -12,7 +12,7 @@ user_data = <<-EOF
               sudo systemctl enable httpd
               sudo systemctl start httpd
               git clone https://github.com/Akashbora02/Git.git
-              cd mydir/Git/studentapp/
+              cd Git/studentapp/
 
               chmod 700 docker-install.sh
               sh docker-install.sh
