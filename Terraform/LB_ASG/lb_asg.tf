@@ -1,6 +1,6 @@
-#data "aws_vpc" "default" {
- # default = true
-#}
+data "aws_vpc" "default" {
+  default = true
+}
 resource "aws_vpc" "main_vpc" {
   cidr_block           = "10.0.0.0/16"
   enable_dns_hostnames = true
@@ -11,7 +11,7 @@ resource "aws_vpc" "main_vpc" {
   }
 }
 
-resource "aws_subnet" "public_subnet" {
+resource "aws_subnets" "public_subnet" {
   vpc_id            = aws_vpc.main_vpc.id
   cidr_block        = "10.0.1.0/24"
   availability_zone = "us-east-1a"
@@ -22,12 +22,12 @@ resource "aws_subnet" "public_subnet" {
   }
 }
 
-#data "aws_subnets" "default" {
- # filter {
-  #  name   = "vpc-id"
-   # values = [data.aws_vpc.default.id]
-  #}
-#}
+data "aws_subnets" "default" {
+  filter {
+    name   = "vpc-id"
+    values = [data.aws_vpc.default.id]
+  }
+}
 
 resource "aws_internet_gateway" "default_igw" {
   vpc_id = aws_vpc.main_vpc.id
