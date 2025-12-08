@@ -27,39 +27,51 @@ resource "aws_instance" "webserver" {
   vpc_security_group_ids = [var.webserver_vpc_security_group_ids]
   # count                   = var.webserver_count
   disable_api_termination = var.webserver_disable_api_termination
-  user_data               = <<-EOF
-              #!/bin/bash
-              sudo apt update -y
-              sudo apt install -y httpd
-              sudo systemctl enable httpd
-              sudo systemctl start httpd
-              cd opt/
-              git clone https://github.com/Akashbora02/Git.git
-              cd opt/Git/studentapp/
+user_data = <<-EOF
+#!/bin/bash
+set -e
 
-              chmod 700 docker-install.sh
-              sh docker-install.sh
-              cd ..
-              docker compose up -d
+sudo apt update -y
+sudo apt install -y apache2
+sudo systemctl enable apache2
+sudo systemctl start apache2
 
-              sudo apt install mysql-client -y
-              DB_HOST = "${aws_db_instance.my_db.address}"
-              DB_USER = "admin"
-              DB_PASS = "${var.aws_db_instance_password}"
-                      mysql -h "$DB_HOST" -u "$DB_USER" -p"$DB_PASS" <<SQL
-              create database studentapp;
-              use studentapp;
-              CREATE TABLE if not exists students(student_id INT NOT NULL AUTO_INCREMENT,  
-              student_name VARCHAR(100) NOT NULL,  
-              student_addr VARCHAR(100) NOT NULL,   
-              student_age VARCHAR(3) NOT NULL,      
-              student_qual VARCHAR(20) NOT NULL,     
-              student_percent VARCHAR(10) NOT NULL,   
-              student_year_passed VARCHAR(10) NOT NULL,  
-              PRIMARY KEY (student_id)  
-              );
-            SQL
-              EOF
+# Clone app repo
+cd /opt/
+git clone https://github.com/Akashbora02/Git.git
+
+cd /opt/Git/studentapp/
+
+chmod 700 docker-install.sh
+sh docker-install.sh
+
+cd ..
+docker compose up -d
+
+# Install MySQL client
+sudo apt install -y mysql-client
+
+# Variables
+DB_HOST="${aws_db_instance.my_db.address}"
+DB_USER="admin"
+DB_PASS="${var.aws_db_instance_password}"
+
+# Run SQL
+mysql -h "$DB_HOST" -u "$DB_USER" -p"$DB_PASS" <<SQL
+CREATE DATABASE IF NOT EXISTS studentapp;
+USE studentapp;
+CREATE TABLE IF NOT EXISTS students (
+  student_id INT NOT NULL AUTO_INCREMENT,
+  student_name VARCHAR(100) NOT NULL,
+  student_addr VARCHAR(100) NOT NULL,
+  student_age VARCHAR(3) NOT NULL,
+  student_qual VARCHAR(20) NOT NULL,
+  student_percent VARCHAR(10) NOT NULL,
+  student_year_passed VARCHAR(10) NOT NULL,
+  PRIMARY KEY (student_id)
+);
+SQL
+EOF
 }
 
 resource "local_file" "context_xml" {
