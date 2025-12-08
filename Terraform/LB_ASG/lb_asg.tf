@@ -31,7 +31,7 @@ data "aws_subnets" "default" {
 
 data "aws_internet_gateway" "default-igw" {
   filter {
-    name = "igw-id"
+    name = "default"
     values = [ data.aws_vpc.default.id ]
   }
 }
