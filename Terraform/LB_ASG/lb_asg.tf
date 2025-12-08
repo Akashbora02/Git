@@ -1,45 +1,45 @@
-data "aws_vpc" "default-vpc" {
+data "aws_vpc" "default" {
   default = true
 }
 
-data "aws_subnets" "default-subnets" {
+data "aws_subnets" "default" {
   filter {
     name   = "vpc-id"
-    values = [data.aws_vpc.default-vpc.id]
+    values = [data.aws_vpc.default.id]
   }
 }
 
-resource "aws_internet_gateway" "my-IGW" {
-  vpc_id = data.aws_vpc.default-vpc.id
+resource "aws_internet_gateway" "default_igw" {
+  vpc_id = data.aws_vpc.default.id
 
   tags = {
-    Name = "my-IGW"
+    Name = "default_igw"
   }
 }
 
-resource "aws_route_table" "my-rt" {
-  vpc_id = data.aws_vpc.default-vpc.id
+resource "aws_route_table" "public_rt" {
+  vpc_id = data.aws_vpc.default.id
 
   route {
     cidr_block = "0.0.0.0/0"
-    gateway_id = aws_internet_gateway.my-IGW.id
+    gateway_id = aws_internet_gateway.default_igw.id
   }
 
   tags = {
-    Name = "my-rt"
+    Name = "public_rt"
   }
 }
 
 resource "aws_route_table_association" "my-rta" {
-  for_each       = toset(data.aws_subnets.default-subnets.ids)
+  for_each       = toset(data.aws_subnets.default.ids)
   subnet_id      = each.value
-  route_table_id = aws_route_table.my-rt.id
+  route_table_id = aws_route_table.public_rt.id
 }
 
 
 resource "aws_security_group" "my-sg" {
   name   = "my-sg"
-  vpc_id = data.aws_vpc.default-vpc.id
+  vpc_id = data.aws_vpc.default.id
 
   ingress {
     from_port   = 80
@@ -62,18 +62,18 @@ resource "aws_lb" "my-lb" {
   internal           = false
   load_balancer_type = "application"
   security_groups    = [aws_security_group.my-sg.id]
-  subnets            = data.aws_subnets.default-subnets.ids
+  subnets            = data.aws_subnets.default.ids
 }
 
 resource "aws_lb_target_group" "my-lb-tg" {
   name     = "my-lb-tg"
   port     = 80
   protocol = "HTTP"
-  vpc_id   = data.aws_vpc.default-vpc.id
+  vpc_id   = data.aws_vpc.default.id
 }
 
-resource "aws_lb_listener" "my-listener" {
-  load_balancer_arn = aws_lb_target_group.my-lb-tg.arn
+resource "aws_lb_listener" "listener" {
+  load_balancer_arn = aws_lb.my-lb.arn
   port              = 80
   protocol          = "HTTP"
 
@@ -135,8 +135,8 @@ resource "aws_autoscaling_group" "asg" {
   desired_capacity          = 2
   min_size                  = 1
   max_size                  = 2
-  vpc_zone_identifier       = data.aws_subnets.default-subnets.ids
-  target_group_arns         = [aws_route_table.my-rt.arn]
+  vpc_zone_identifier       = data.aws_subnets.default.ids
+  target_group_arns         = [aws_lb_target_group.my-lb-tg.arn]
   health_check_grace_period = 120
   health_check_type         = "ELB"
 
