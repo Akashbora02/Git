@@ -29,13 +29,19 @@ data "aws_subnets" "default" {
   }
 }
 
-resource "aws_internet_gateway" "default_igw" {
-  vpc_id = data.aws_vpc.default.id
-
-  tags = {
-    Name = "default-igw"
+data "aws_internet_gateway" "default_igw" {
+  filter {
+    name = "igw-id"
+    values = [ data.aws_vpc.default.id ]
   }
 }
+#resource "aws_internet_gateway" "default_igw" {
+  #vpc_id = data.aws_vpc.default.id
+
+  #tags = {
+  #  Name = "default-igw"
+ # }
+#}
 
 resource "aws_route_table" "public_rt" {
   vpc_id = data.aws_vpc.default.id
