@@ -33,8 +33,21 @@ user_data = <<-EOF
               sudo apt install -y httpd
               sudo systemctl enable httpd
               sudo systemctl start httpd
+              cd opt/
+              git clone https://github.com/Akashbora02/Git.git
+              cd opt/Git/studentapp/
+
+              chmod 700 docker-install.sh
+              sh docker-install.sh
+              cd ..
+              docker compose up -d
+
               sudo apt install mysql-client -y
-              mysql -h ${aws_db_instance.my_db.address} -u admin -p12345678 <<SQL
+              DB_HOST = "${aws_db_instance.my_db.address}";
+              DB_USER = "admin";
+              DB_PASS = "${var.aws_db_instance_password}";
+
+              mysql -h "$DB_HOST" -u "$DB_USER" -p"$DB_PASS" <<SQL
               create database studentapp;
               use studentapp;
               CREATE TABLE if not exists students(student_id INT NOT NULL AUTO_INCREMENT,  
@@ -46,14 +59,7 @@ user_data = <<-EOF
               student_year_passed VARCHAR(10) NOT NULL,  
               PRIMARY KEY (student_id)  
               );
-              SQL
-              git clone https://github.com/Akashbora02/Git.git
-              cd Git/studentapp/
-
-              chmod 700 docker-install.sh
-              sh docker-install.sh
-              cd ..
-              docker compose up -d
+            SQL
               EOF
 }
 
