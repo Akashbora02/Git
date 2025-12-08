@@ -11,7 +11,7 @@ resource "aws_vpc" "main_vpc" {
   }
 }
 
-resource "aws_subnets" "public_subnet" {
+resource "aws_subnet" "public_subnet" {
   vpc_id            = data.aws_vpc.default.id
   cidr_block        = "10.0.1.0/24"
   availability_zone = "us-east-1a"
