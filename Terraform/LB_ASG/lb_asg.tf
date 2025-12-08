@@ -9,35 +9,35 @@ data "aws_subnets" "default-subnets" {
   }
 }
 
-resource "aws_internet_gateway" "my_IGW" {
+resource "aws_internet_gateway" "my-IGW" {
   vpc_id = data.aws_vpc.default-vpc.id
 
   tags = {
-    Name = "my_IGW"
+    Name = "my-IGW"
   }
 }
 
-resource "aws_route_table" "my_rt" {
+resource "aws_route_table" "my-rt" {
   vpc_id = data.aws_vpc.default-vpc.id
 
   route {
     cidr_block = "0.0.0.0/0"
-    gateway_id = aws_internet_gateway.my_IGW.id
+    gateway_id = aws_internet_gateway.my-IGW.id
   }
 
   tags = {
-    Name = "my_rt"
+    Name = "my-rt"
   }
 }
 
-resource "aws_route_table_association" "my_rta" {
+resource "aws_route_table_association" "my-rta" {
   for_each       = toset(data.aws_subnets.default-subnets.ids)
   subnet_id      = each.value
-  route_table_id = aws_route_table.my_rt.id
+  route_table_id = aws_route_table.my-rt.id
 }
 
 
-resource "aws_security_group" "my_sg" {
+resource "aws_security_group" "my-sg" {
   name   = "my-sg"
   vpc_id = data.aws_vpc.default-vpc.id
 
@@ -57,29 +57,29 @@ resource "aws_security_group" "my_sg" {
   }
 }
 
-resource "aws_lb" "my_lb" {
+resource "aws_lb" "my-lb" {
   name               = "my-lb"
   internal           = false
   load_balancer_type = "application"
-  security_groups    = [aws_security_group.my_sg.id]
+  security_groups    = [aws_security_group.my-sg.id]
   subnets            = data.aws_subnets.default-subnets.ids
 }
 
-resource "aws_lb_target_group" "my_lb_tg" {
+resource "aws_lb_target_group" "my-lb_tg" {
   name     = "my-lb-tg"
   port     = 80
   protocol = "HTTP"
   vpc_id   = data.aws_vpc.default-vpc.id
 }
 
-resource "aws_lb_listener" "my_listener" {
-  load_balancer_arn = aws_lb_target_group.my_lb_tg.arn
+resource "aws_lb_listener" "my-listener" {
+  load_balancer_arn = aws_lb_target_group.my-lb_tg.arn
   port              = 80
   protocol          = "HTTP"
 
   default_action {
     type             = "forward"
-    target_group_arn = aws_lb_target_group.my_lb_tg.arn
+    target_group_arn = aws_lb_target_group.my-lb_tg.arn
   }
 }
 
@@ -91,7 +91,7 @@ resource "aws_launch_template" "my_temp" {
 
   network_interfaces {
     associate_public_ip_address = true
-    security_groups             = [aws_security_group.my_sg.id]
+    security_groups             = [aws_security_group.my-sg.id]
   }
 
   user_data = base64encode(<<-EOF
@@ -136,7 +136,7 @@ resource "aws_autoscaling_group" "asg" {
   min_size                  = 1
   max_size                  = 2
   vpc_zone_identifier       = data.aws_subnets.default-subnets.ids
-  target_group_arns         = [aws_route_table.my_rt.arn]
+  target_group_arns         = [aws_route_table.my-rt.arn]
   health_check_grace_period = 120
   health_check_type         = "ELB"
 
@@ -148,5 +148,5 @@ resource "aws_autoscaling_group" "asg" {
 
 
 output "alb_dns_name" {
-  value = aws_lb.my_lb.dns_name
+  value = aws_lb.my-lb.dns_name
 }
