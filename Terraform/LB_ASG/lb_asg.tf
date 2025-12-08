@@ -31,7 +31,7 @@ data "aws_subnets" "default" {
 
 data "aws_internet_gateway" "default-igw" {
   filter {
-    name = "default"
+    name = "attachment.vpc-id"
     values = [ data.aws_vpc.default.id ]
   }
 }
