@@ -6,19 +6,19 @@ resource "aws_db_subnet_group" "db_subnets" {
   }
 }
 resource "aws_db_instance" "my_db" {
-  allocated_storage    = 10
-  db_name              = var.aws_db_instance_db_name
-  engine               = var.aws_db_instance_engine
-  engine_version       = var.aws_db_instance_engine_version
-  identifier           = var.aws_db_instance_identifier
-  instance_class       = var.aws_db_instance_instance_class
-  username             = var.aws_db_instance_username
-  password             = var.aws_db_instance_password
-  parameter_group_name = var.aws_db_instance_parameter_group_name
-  publicly_accessible  = true
-  db_subnet_group_name = aws_db_subnet_group.db_subnets.id
+  allocated_storage      = 10
+  db_name                = var.aws_db_instance_db_name
+  engine                 = var.aws_db_instance_engine
+  engine_version         = var.aws_db_instance_engine_version
+  identifier             = var.aws_db_instance_identifier
+  instance_class         = var.aws_db_instance_instance_class
+  username               = var.aws_db_instance_username
+  password               = var.aws_db_instance_password
+  parameter_group_name   = var.aws_db_instance_parameter_group_name
+  publicly_accessible    = true
+  db_subnet_group_name   = aws_db_subnet_group.db_subnets.id
   vpc_security_group_ids = [var.webserver_vpc_security_group_ids]
-  skip_final_snapshot  = true
+  skip_final_snapshot    = true
 }
 resource "aws_instance" "webserver" {
   ami                    = var.webserver_ami
@@ -27,7 +27,7 @@ resource "aws_instance" "webserver" {
   vpc_security_group_ids = [var.webserver_vpc_security_group_ids]
   # count                   = var.webserver_count
   disable_api_termination = var.webserver_disable_api_termination
-user_data = <<-EOF
+  user_data               = <<-EOF
               #!/bin/bash
               sudo apt update -y
               sudo apt install -y httpd
@@ -43,11 +43,10 @@ user_data = <<-EOF
               docker compose up -d
 
               sudo apt install mysql-client -y
-              DB_HOST = "${aws_db_instance.my_db.address}";
-              DB_USER = "admin";
-              DB_PASS = "${var.aws_db_instance_password}";
-
-              mysql -h "$DB_HOST" -u "$DB_USER" -p"$DB_PASS" <<SQL
+              DB_HOST = "${aws_db_instance.my_db.address}"
+              DB_USER = "admin"
+              DB_PASS = "${var.aws_db_instance_password}"
+                      mysql -h "$DB_HOST" -u "$DB_USER" -p"$DB_PASS" <<SQL
               create database studentapp;
               use studentapp;
               CREATE TABLE if not exists students(student_id INT NOT NULL AUTO_INCREMENT,  
