@@ -4,8 +4,8 @@ data "aws_vpc" "default_vpc" {
 
 data "aws_subnets" "default_subnets" {
   filter {
-    name = "vpc_id"
-    values = [ data.aws_vpc.default_vpc.id ]
+    name   = "vpc_id"
+    values = [data.aws_vpc.default_vpc.id]
   }
 }
 
@@ -19,7 +19,7 @@ resource "aws_internet_gateway" "my_IGW" {
 
 resource "aws_route_table" "my_rt" {
   vpc_id = data.aws_vpc.default_vpc.id
-  
+
   route {
     cidr_block = "0.0.0.0/0"
     gateway_id = aws_internet_gateway.my_IGW.id
@@ -31,67 +31,67 @@ resource "aws_route_table" "my_rt" {
 }
 
 resource "aws_route_table_association" "my_rta" {
-    for_each = toset(data.aws_subnets.default_subnets.ids)
-    subnet_id = each.value
-    route_table_id = aws_route_table.my_rt.id
+  for_each       = toset(data.aws_subnets.default_subnets.ids)
+  subnet_id      = each.value
+  route_table_id = aws_route_table.my_rt.id
 }
 
 
 resource "aws_security_group" "my_sg" {
-  name = "my_sg"
+  name   = "my_sg"
   vpc_id = data.aws_vpc.default_vpc.id
 
   ingress {
-    from_port = 80
-    to_port = 80
-    protocol = "tcp"
+    from_port   = 80
+    to_port     = 80
+    protocol    = "tcp"
     description = "Allow TCP"
     cidr_blocks = "0.0.0.0/0"
   }
 
   egress {
-    from_port = 0
-    to_port = 0
-    protocol = "-1"
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
     cidr_blocks = "0.0.0.0/0"
   }
 }
 
 resource "aws_lb" "my_lb" {
-  name = "my_lb"
-  internal = false
+  name               = "my_lb"
+  internal           = false
   load_balancer_type = "application"
-  security_groups = [ aws_security_group.my_sg.id ]
-  subnets = data.aws_subnets.default_subnets.ids
+  security_groups    = [aws_security_group.my_sg.id]
+  subnets            = data.aws_subnets.default_subnets.ids
 }
 
 resource "aws_lb_target_group" "my_lb_tg" {
-  name = "my_lb_tg"
-  port = 80
+  name     = "my_lb_tg"
+  port     = 80
   protocol = "HTTP"
-  vpc_id = data.aws_vpc.default_vpc.id
+  vpc_id   = data.aws_vpc.default_vpc.id
 }
 
 resource "aws_lb_listener" "my_listener" {
   load_balancer_arn = aws_lb_target_group.my_lb_tg.arn
-  port = 80
-  protocol = "HTTP"
+  port              = 80
+  protocol          = "HTTP"
 
   default_action {
-    type = "forward"
+    type             = "forward"
     target_group_arn = aws_lb_target_group.my_lb_tg.arn
   }
 }
 
 
 resource "aws_launch_template" "my_temp" {
-  name_prefix = "my_temp"
-  image_id = "ami-0fa3fe0fa7920f68e"
+  name_prefix   = "my_temp"
+  image_id      = "ami-0fa3fe0fa7920f68e"
   instance_type = "t2.micro"
 
   network_interfaces {
     associate_public_ip_address = true
-    security_groups = [ aws_security_group.my_sg.id ]
+    security_groups             = [aws_security_group.my_sg.id]
   }
 
   user_data = base64encode(<<-EOF
@@ -128,20 +128,20 @@ resource "aws_launch_template" "my_temp" {
               </html>
               HTML
               EOF
-        )
+  )
 }
 
 resource "aws_autoscaling_group" "asg" {
-  desired_capacity = 2
-  min_size = 1
-  max_size = 2
-  vpc_zone_identifier = data.aws_subnets.default_subnets.ids
-  target_group_arns = [ aws_route_table.my_rt.arn ]
+  desired_capacity          = 2
+  min_size                  = 1
+  max_size                  = 2
+  vpc_zone_identifier       = data.aws_subnets.default_subnets.ids
+  target_group_arns         = [aws_route_table.my_rt.arn]
   health_check_grace_period = 120
-  health_check_type = "ELB"
+  health_check_type         = "ELB"
 
   launch_template {
-    id = aws_launch_template.my_temp.id
+    id      = aws_launch_template.my_temp.id
     version = "$Latest"
   }
 }
