@@ -12,7 +12,7 @@ resource "aws_vpc" "main_vpc" {
 }
 
 resource "aws_subnets" "public_subnet" {
-  vpc_id            = aws_vpc.main_vpc.id
+  vpc_id            = data.aws_vpc.default.id
   cidr_block        = "10.0.1.0/24"
   availability_zone = "us-east-1a"
   map_public_ip_on_launch = true
@@ -30,7 +30,7 @@ data "aws_subnets" "default" {
 }
 
 resource "aws_internet_gateway" "default_igw" {
-  vpc_id = aws_vpc.main_vpc.id
+  vpc_id = data.aws_vpc.default.id
 
   tags = {
     Name = "default-igw"
@@ -38,7 +38,7 @@ resource "aws_internet_gateway" "default_igw" {
 }
 
 resource "aws_route_table" "public_rt" {
-  vpc_id = aws_vpc.main_vpc.id
+  vpc_id = data.aws_vpc.default.id
 
   route {
     cidr_block = "0.0.0.0/0"
@@ -51,15 +51,15 @@ resource "aws_route_table" "public_rt" {
 }
 
 resource "aws_route_table_association" "my-rta" {
- # for_each       = toset(data.aws_subnets.default.ids)
-  subnet_id      = aws_subnet.public_subnet.id
+  for_each       = toset(data.aws_subnets.default.ids)
+  subnet_id      = each.value
   route_table_id = aws_route_table.public_rt.id
 }
 
 
 resource "aws_security_group" "my-sg" {
   name   = "my-sg"
-  vpc_id = aws_vpc.main_vpc.id
+  vpc_id = data.aws_vpc.default.id
 
   ingress {
     from_port   = 80
@@ -89,7 +89,7 @@ resource "aws_lb_target_group" "my-lb-tg" {
   name     = "my-lb-tg"
   port     = 80
   protocol = "HTTP"
-  vpc_id   = aws_vpc.main_vpc.id
+  vpc_id   = data.aws_vpc.default.id
 }
 
 resource "aws_lb_listener" "listener" {
