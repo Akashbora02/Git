@@ -52,7 +52,7 @@ resource "aws_route_table" "public_rt" {
 
 resource "aws_route_table_association" "my-rta" {
  # for_each       = toset(data.aws_subnets.default.ids)
-  subnet_id      = each.value
+  subnet_id      = aws_subnet.public_subnet.id
   route_table_id = aws_route_table.public_rt.id
 }
 
