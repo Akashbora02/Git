@@ -65,7 +65,7 @@ resource "aws_lb" "my-lb" {
   subnets            = data.aws_subnets.default-subnets.ids
 }
 
-resource "aws_lb_target_group" "my-lb_tg" {
+resource "aws_lb_target_group" "my-lb-tg" {
   name     = "my-lb-tg"
   port     = 80
   protocol = "HTTP"
@@ -73,13 +73,13 @@ resource "aws_lb_target_group" "my-lb_tg" {
 }
 
 resource "aws_lb_listener" "my-listener" {
-  load_balancer_arn = aws_lb_target_group.my-lb_tg.arn
+  load_balancer_arn = aws_lb_target_group.my-lb-tg.arn
   port              = 80
   protocol          = "HTTP"
 
   default_action {
     type             = "forward"
-    target_group_arn = aws_lb_target_group.my-lb_tg.arn
+    target_group_arn = aws_lb_target_group.my-lb-tg.arn
   }
 }
 
