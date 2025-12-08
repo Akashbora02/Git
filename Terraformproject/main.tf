@@ -28,60 +28,48 @@ resource "aws_instance" "webserver" {
   # count                   = var.webserver_count
   disable_api_termination = var.webserver_disable_api_termination
 user_data = <<-EOF
-#!/bin/bash
-set -e
+              #!/bin/bash
 
-sudo apt update -y
-sudo apt install -y apache2 git mysql-client
+              sudo apt update -y
+              sudo apt install -y apache2 git mysql-client
 
-sudo systemctl enable apache2
-sudo systemctl start apache2
+              sudo systemctl enable apache2
+              sudo systemctl start apache2
 
-# Go to /opt
-cd /opt/
+              cd /opt/
 
-# Clone repo
-sudo git clone https://github.com/Akashbora02/Git.git
-cd /opt/Git/studentapp/
+              sudo git clone https://github.com/Akashbora02/Git.git
+              cd /opt/Git/studentapp/
 
-chmod 700 docker-install.sh
-sh docker-install.sh
+              chmod 700 docker-install.sh
+              sh docker-install.sh
 
-cd ..
-docker compose up -d
-
-# Wait for RDS MySQL to be ready
-until mysql -h "${aws_db_instance.my_db.address}" -u admin -p"${var.aws_db_instance_password}" -e "SELECT 1;" 2>/dev/null
-do
-  echo "Waiting for RDS to become available..."
-  sleep 10
-done
-
-# Execute SQL
-mysql -h "${aws_db_instance.my_db.address}" -u admin -p"${var.aws_db_instance_password}" <<SQL
-CREATE DATABASE IF NOT EXISTS studentapp;
-USE studentapp;
-CREATE TABLE IF NOT EXISTS students (
-  student_id INT NOT NULL AUTO_INCREMENT,
-  student_name VARCHAR(100) NOT NULL,
-  student_addr VARCHAR(100) NOT NULL,
-  student_age VARCHAR(3) NOT NULL,
-  student_qual VARCHAR(20) NOT NULL,
-  student_percent VARCHAR(10) NOT NULL,
-  student_year_passed VARCHAR(10) NOT NULL,
-  PRIMARY KEY (student_id)
-);
-SQL
-EOF
+              cd ..
+              docker compose up -d
+              mysql -h "${aws_db_instance.my_db.address}" -u admin -p"${var.aws_db_instance_password}" <<SQL
+              CREATE DATABASE IF NOT EXISTS studentapp;
+              USE studentapp;
+              CREATE TABLE IF NOT EXISTS students (
+                student_id INT NOT NULL AUTO_INCREMENT,
+                student_name VARCHAR(100) NOT NULL,
+                student_addr VARCHAR(100) NOT NULL,
+                student_age VARCHAR(3) NOT NULL,
+                student_qual VARCHAR(20) NOT NULL,
+                student_percent VARCHAR(10) NOT NULL,
+                student_year_passed VARCHAR(10) NOT NULL,
+                PRIMARY KEY (student_id)
+              );
+              SQL
+            EOF
 }
 
-resource "local_file" "context_xml" {
-  content = templatefile("${path.module}/context.xml.tpl", {
-    db_endpoint = aws_db_instance.my_db.address
-    db_password = var.aws_db_instance_password
-  })
-  filename = "Git/studentapp/context.xml"
-}
+#resource "local_file" "context_xml" {
+#  content = templatefile("${path.module}/context.xml.tpl", {
+#    db_endpoint = aws_db_instance.my_db.address
+#    db_password = var.aws_db_instance_password
+#  })
+#  filename = "Git/studentapp/context.xml"
+#}
 output "webserver_publicip" {
   value = aws_instance.webserver.public_ip
 }
