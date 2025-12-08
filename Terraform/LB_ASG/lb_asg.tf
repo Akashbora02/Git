@@ -29,7 +29,7 @@ data "aws_subnets" "default" {
   }
 }
 
-data "aws_internet_gateway" "default_igw" {
+data "aws_internet_gateway" "default-igw" {
   filter {
     name = "igw-id"
     values = [ data.aws_vpc.default.id ]
@@ -48,7 +48,7 @@ resource "aws_route_table" "public_rt" {
 
   route {
     cidr_block = "0.0.0.0/0"
-    gateway_id = data.aws_internet_gateway.default_igw.id
+    gateway_id = data.aws_internet_gateway.default-igw.id
   }
 
   tags = {
