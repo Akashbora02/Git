@@ -46,7 +46,17 @@ user_data = <<-EOF
 
               cd ..
               docker compose up -d
-              mysql -h "${aws_db_instance.my_db.address}" -u admin -p"${var.aws_db_instance_password}" <<SQL
+              DB_HOST="${aws_db_instance.my_db.address}"
+              DB_USER="admin"
+              DB_PASS="${var.aws_db_instance_password}"
+
+              until mysql -h "$DB_HOST" -u "$DB_USER" -p"$DB_PASS" -e "SELECT 1;" 2>/dev/null
+              do
+                echo "Waiting for MySQL to be ready..."
+                sleep 10
+              done
+
+              mysql -h "$DB_HOST" -u "$DB_USER" -p"$DB_PASS" <<SQL
               CREATE DATABASE IF NOT EXISTS studentapp;
               USE studentapp;
               CREATE TABLE IF NOT EXISTS students (
@@ -60,6 +70,10 @@ user_data = <<-EOF
                 PRIMARY KEY (student_id)
               );
               SQL
+
+              CONTEXT_FILE="/opt/Git/studentapp/context.xml"
+              sudo sed -i "s|DB_HOST_PLACEHOLDER|$DB_HOST|g" "$CONTEXT_FILE"
+              echo "User data script completed successfully!"
             EOF
 }
 
