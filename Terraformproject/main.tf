@@ -34,8 +34,8 @@ user_data = <<-EOF
               sudo systemctl enable httpd
               sudo systemctl start httpd
               sudo apt install mysql-client -y
-              mysql -h ${aws_db_instance.my_db.address} -u admin -p12345678
-              create database  studentapp;
+              mysql -h ${aws_db_instance.my_db.address} -u admin -p12345678 <<SQL
+              create database studentapp;
               use studentapp;
               CREATE TABLE if not exists students(student_id INT NOT NULL AUTO_INCREMENT,  
               student_name VARCHAR(100) NOT NULL,  
@@ -46,8 +46,7 @@ user_data = <<-EOF
               student_year_passed VARCHAR(10) NOT NULL,  
               PRIMARY KEY (student_id)  
               );
-              show tables;
-              exit
+              SQL
               git clone https://github.com/Akashbora02/Git.git
               cd Git/studentapp/
 
