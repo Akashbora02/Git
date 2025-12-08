@@ -1,6 +1,6 @@
-data "aws_vpc" "default" {
-  default = true
-}
+#data "aws_vpc" "default" {
+ # default = true
+#}
 resource "aws_vpc" "main_vpc" {
   cidr_block           = "10.0.0.0/16"
   enable_dns_hostnames = true
@@ -11,12 +11,23 @@ resource "aws_vpc" "main_vpc" {
   }
 }
 
-data "aws_subnets" "default" {
-  filter {
-    name   = "vpc-id"
-    values = [data.aws_vpc.default.id]
+resource "aws_subnet" "public_subnet" {
+  vpc_id            = aws_vpc.main_vpc.id
+  cidr_block        = "10.0.1.0/24"
+  availability_zone = "us-east-1a"
+  map_public_ip_on_launch = true
+
+  tags = {
+    Name = "public-subnet"
   }
 }
+
+#data "aws_subnets" "default" {
+ # filter {
+  #  name   = "vpc-id"
+   # values = [data.aws_vpc.default.id]
+  #}
+#}
 
 resource "aws_internet_gateway" "default_igw" {
   vpc_id = aws_vpc.main_vpc.id
@@ -40,7 +51,7 @@ resource "aws_route_table" "public_rt" {
 }
 
 resource "aws_route_table_association" "my-rta" {
-  for_each       = toset(data.aws_subnets.default.ids)
+ # for_each       = toset(data.aws_subnets.default.ids)
   subnet_id      = each.value
   route_table_id = aws_route_table.public_rt.id
 }
