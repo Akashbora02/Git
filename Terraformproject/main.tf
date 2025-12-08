@@ -27,7 +27,6 @@ resource "aws_instance" "webserver" {
   vpc_security_group_ids = [var.webserver_vpc_security_group_ids]
   # count                   = var.webserver_count
   disable_api_termination = var.webserver_disable_api_termination
-#              mysql -h ${aws_db_instance.my_db.address} -u admin -p12345678 -e "CREATE DATABASE studentapp;"
 user_data = <<-EOF
               #!/bin/bash
               sudo apt update -y
@@ -35,7 +34,18 @@ user_data = <<-EOF
               sudo systemctl enable httpd
               sudo systemctl start httpd
               sudo apt install mysql-client -y
-              echo "DB Endpoint: ${aws_db_instance.my_db.address}"
+              mysql -h ${aws_db_instance.my_db.address} -u admin -p12345678 -e "CREATE DATABASE studentapp;"
+              mysql -h ${aws_db_instance.my_db.address} -u admin -p12345678 studentapp <<SQL
+              CREATE TABLE if not exists students(student_id INT NOT NULL AUTO_INCREMENT,  
+              student_name VARCHAR(100) NOT NULL,  
+              student_addr VARCHAR(100) NOT NULL,   
+              student_age VARCHAR(3) NOT NULL,      
+              student_qual VARCHAR(20) NOT NULL,     
+              student_percent VARCHAR(10) NOT NULL,   
+              student_year_passed VARCHAR(10) NOT NULL,  
+              PRIMARY KEY (student_id)  
+              );
+            SQL
               git clone https://github.com/Akashbora02/Git.git
               cd Git/studentapp/
 
@@ -46,6 +56,13 @@ user_data = <<-EOF
               EOF
 }
 
+resource "local_file" "context_xml" {
+  content = templatefile("${path.module}/context.xml.tpl", {
+    db_endpoint = aws_db_instance.my_db.address
+    db_password = var.aws_db_instance_password
+  })
+  filename = "Git/studentapp/context.xml"
+}
 output "webserver_publicip" {
   value = aws_instance.webserver.public_ip
 }
