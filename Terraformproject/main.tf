@@ -32,14 +32,16 @@ user_data = <<-EOF
 set -e
 
 sudo apt update -y
-sudo apt install -y apache2
+sudo apt install -y apache2 git mysql-client
+
 sudo systemctl enable apache2
 sudo systemctl start apache2
 
-# Clone app repo
+# Go to /opt
 cd /opt/
-git clone https://github.com/Akashbora02/Git.git
 
+# Clone repo
+sudo git clone https://github.com/Akashbora02/Git.git
 cd /opt/Git/studentapp/
 
 chmod 700 docker-install.sh
@@ -48,16 +50,15 @@ sh docker-install.sh
 cd ..
 docker compose up -d
 
-# Install MySQL client
-sudo apt install -y mysql-client
+# Wait for RDS MySQL to be ready
+until mysql -h "${aws_db_instance.my_db.address}" -u admin -p"${var.aws_db_instance_password}" -e "SELECT 1;" 2>/dev/null
+do
+  echo "Waiting for RDS to become available..."
+  sleep 10
+done
 
-# Variables
-DB_HOST="${aws_db_instance.my_db.address}"
-DB_USER="admin"
-DB_PASS="${var.aws_db_instance_password}"
-
-# Run SQL
-mysql -h "$DB_HOST" -u "$DB_USER" -p"$DB_PASS" <<SQL
+# Execute SQL
+mysql -h "${aws_db_instance.my_db.address}" -u admin -p"${var.aws_db_instance_password}" <<SQL
 CREATE DATABASE IF NOT EXISTS studentapp;
 USE studentapp;
 CREATE TABLE IF NOT EXISTS students (
