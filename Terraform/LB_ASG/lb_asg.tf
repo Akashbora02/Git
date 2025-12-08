@@ -38,7 +38,7 @@ resource "aws_route_table_association" "my_rta" {
 
 
 resource "aws_security_group" "my_sg" {
-  name   = "my_sg"
+  name   = "my-sg"
   vpc_id = data.aws_vpc.default_vpc.id
 
   ingress {
@@ -58,7 +58,7 @@ resource "aws_security_group" "my_sg" {
 }
 
 resource "aws_lb" "my_lb" {
-  name               = "my_lb"
+  name               = "my-lb"
   internal           = false
   load_balancer_type = "application"
   security_groups    = [aws_security_group.my_sg.id]
@@ -85,7 +85,7 @@ resource "aws_lb_listener" "my_listener" {
 
 
 resource "aws_launch_template" "my_temp" {
-  name_prefix   = "my_temp"
+  name_prefix   = "my-temp"
   image_id      = "ami-0fa3fe0fa7920f68e"
   instance_type = "t2.micro"
 
