@@ -1,16 +1,22 @@
-data "aws_vpc" "default" {
-  default = true
+resource "aws_vpc" "main_vpc" {
+  cidr_block           = "10.0.0.0/16"
+  enable_dns_hostnames = true
+  enable_dns_support   = true
+
+  tags = {
+    Name = "main-vpc"
+  }
 }
 
 data "aws_subnets" "default" {
   filter {
     name   = "vpc-id"
-    values = [data.aws_vpc.default.id]
+    values = [aws_vpc.main_vpc.id]
   }
 }
 
 resource "aws_internet_gateway" "default_igw" {
-  vpc_id = data.aws_vpc.default.id
+  vpc_id = aws_vpc.main_vpc.id
 
   tags = {
     Name = "default-igw"
@@ -18,7 +24,7 @@ resource "aws_internet_gateway" "default_igw" {
 }
 
 resource "aws_route_table" "public_rt" {
-  vpc_id = data.aws_vpc.default.id
+  vpc_id = aws_vpc.main_vpc.id
 
   route {
     cidr_block = "0.0.0.0/0"
@@ -39,7 +45,7 @@ resource "aws_route_table_association" "my-rta" {
 
 resource "aws_security_group" "my-sg" {
   name   = "my-sg"
-  vpc_id = data.aws_vpc.default.id
+  vpc_id = aws_vpc.main_vpc.id
 
   ingress {
     from_port   = 80
@@ -69,7 +75,7 @@ resource "aws_lb_target_group" "my-lb-tg" {
   name     = "my-lb-tg"
   port     = 80
   protocol = "HTTP"
-  vpc_id   = data.aws_vpc.default.id
+  vpc_id   = aws_vpc.main_vpc.id
 }
 
 resource "aws_lb_listener" "listener" {
