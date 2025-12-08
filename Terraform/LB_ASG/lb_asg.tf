@@ -1,3 +1,6 @@
+data "aws_vpc" "default" {
+  default = true
+}
 resource "aws_vpc" "main_vpc" {
   cidr_block           = "10.0.0.0/16"
   enable_dns_hostnames = true
@@ -11,7 +14,7 @@ resource "aws_vpc" "main_vpc" {
 data "aws_subnets" "default" {
   filter {
     name   = "vpc-id"
-    values = [aws_vpc.main_vpc.id]
+    values = [data.aws_vpc.default.id]
   }
 }
 
