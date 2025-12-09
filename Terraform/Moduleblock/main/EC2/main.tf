@@ -3,12 +3,12 @@ resource "aws_instance" "webserver" {
   instance_type           = var.webserver_instance_type
   key_name                = var.webserver_key_name
   subnet_id               = var.webserver_subnetA
-  vpc_security_group_ids  = [var.webserver_sg]
+  vpc_security_group_ids  = [ var.webserver_sg ]
   disable_api_termination = var.webserver_disable_api_termination
 user_data = <<EOF
 #!/bin/bash
 sudo apt update -y
-sudo apt install -y nginx -y
+sudo apt install -y nginx
 sudo systemctl enable nginx
 sudo systemctl start nginx
 

@@ -6,12 +6,18 @@ output "vpc_id" {
   value = aws_vpc.my_vpc.id
 }
 
-output "webserver_sg_id" {
+output "webserver_sg" {
   value = aws_security_group.webserver_sg.id
 }
 
+output "webserver_sg_id" {
+  value =  aws_security_group.webserver_sg.id  
+
+}
+
 output "webserver_sg_arn" {
-  value = aws_security_group.webserver_sg.arn
+  value =  aws_security_group.webserver_sg.arn
+
 }
 
 output "vpc_IGW" {
