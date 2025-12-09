@@ -13,7 +13,7 @@ resource "aws_instance" "webserver" {
                 sudo systemctl enable nginx
                 sudo systemctl start nginx
 
-                cat <<HTML >/var/www/html/index.html
+                cat <<HTML > /var/www/html/index.html
                 <!DOCTYPE html>
                 <html lang="en">
                 <head>
