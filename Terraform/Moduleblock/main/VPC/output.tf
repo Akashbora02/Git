@@ -6,7 +6,7 @@ output "vpc_id" {
   value = aws_vpc.my_vpc.id
 }
 
-output "webserver_sg" {
+output "webserver_sg_id" {
   value = aws_security_group.webserver_sg.id
 }
 
