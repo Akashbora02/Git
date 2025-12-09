@@ -14,6 +14,6 @@ output "webserver_sg_arn" {
   value = aws_security_group.webserver_sg.arn
 }
 
-output "vpc_IGW" {
-  value = aws_internet_gateway.my_IGW.id
-}
+#output "vpc_IGW" {
+#  value = aws_internet_gateway.my_IGW.id
+#}
