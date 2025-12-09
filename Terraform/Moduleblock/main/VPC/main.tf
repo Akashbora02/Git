@@ -3,29 +3,29 @@ resource "aws_vpc" "my_vpc" {
 }
 
 resource "aws_subnet" "my_subnetA" {
-  vpc_id = aws_vpc.my_vpc.id
-  cidr_block = var.vpc_subnetA
+  vpc_id                  = aws_vpc.my_vpc.id
+  cidr_block              = var.vpc_subnetA
   map_public_ip_on_launch = var.public_ip
 }
 
 resource "aws_security_group" "webserver_sg" {
   vpc_id = aws_vpc.my_vpc.id
   ingress {
-    from_port = 80
-    to_port = 80
-    protocol = "tcp"
-    cidr_blocks = [ "0.0.0.0/0" ]
+    from_port   = 80
+    to_port     = 80
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
   }
   ingress {
-    from_port = 8080
-    to_port = 8080
-    protocol = "tcp"
-    cidr_blocks = [ "0.0.0.0/0" ]
+    from_port   = 8080
+    to_port     = 8080
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
   }
   egress {
-    from_port = 0
-    to_port = 0
-    protocol = "-1"
-    cidr_blocks = [ "0.0.0.0/0" ]
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
   }
 }
