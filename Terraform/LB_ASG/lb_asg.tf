@@ -1,26 +1,6 @@
 data "aws_vpc" "default" {
   default = true
 }
-#resource "aws_vpc" "main_vpc" {
-#  cidr_block           = "10.0.0.0/16"
-#  enable_dns_hostnames = true
-#  enable_dns_support   = true
-
-#  tags = {
-#    Name = "main-vpc"
-#  }
-#}
-
-#resource "aws_subnet" "public_subnet" {
- # vpc_id            = data.aws_vpc.default.id
- # cidr_block        = "10.0.1.0/24"
- # availability_zone = "us-east-1a"
- # map_public_ip_on_launch = true
-
- # tags = {
-  #  Name = "public-subnet"
-  #}
-#}
 
 data "aws_subnets" "default" {
   filter {
@@ -28,40 +8,6 @@ data "aws_subnets" "default" {
     values = [data.aws_vpc.default.id]
   }
 }
-
-data "aws_internet_gateway" "default-igw" {
-  filter {
-    name = "attachment.vpc-id"
-    values = [ data.aws_vpc.default.id ]
-  }
-}
-#resource "aws_internet_gateway" "default_igw" {
-  #vpc_id = data.aws_vpc.default.id
-
-  #tags = {
-  #  Name = "default-igw"
- # }
-#}
-
-resource "aws_route_table" "public_rt" {
-  vpc_id = data.aws_vpc.default.id
-
-  route {
-    cidr_block = "0.0.0.0/0"
-    gateway_id = data.aws_internet_gateway.default-igw.id
-  }
-
-  tags = {
-    Name = "public_rt"
-  }
-}
-
-resource "aws_route_table_association" "my-rta" {
-  for_each       = toset(data.aws_subnets.default.ids)
-  subnet_id      = each.value
-  route_table_id = aws_route_table.public_rt.id
-}
-
 
 resource "aws_security_group" "my-sg" {
   name   = "my-sg"
