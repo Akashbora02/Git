@@ -16,17 +16,15 @@ resource "aws_s3_bucket_versioning" "version" {
         status = "Enabled"
     }
 } */
-resource "aws_dynamodb_table" "my-table" {
-#    depends_on = [ aws_s3_bucket.my-s3 ]
-    name = "b61"
-    hash_key = "LockID"
-    billing_mode = "PROVISIONED"
-    stream_enabled = true
-    stream_view_type = "NEW_AND_OLD_IMAGES"
+resource "aws_dynamodb_table" "tf_lock" {
+  name         = "tf-lock-table"
+  billing_mode = "PAY_PER_REQUEST"
+  hash_key     = "LockID"
 
-    attribute {
-      name = "LockID"
-      type = "S"
-    }
+  attribute {
+    name = "LockID"
+    type = "S"
+  }
 }
+#    depends_on = [ aws_s3_bucket.my-s3 ]
 
