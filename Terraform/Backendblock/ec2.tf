@@ -6,7 +6,18 @@ resource "aws_instance" "webserver" {
   disable_api_termination = var.webserver_disable_api_termination
 }
 
+resource "aws_s3_bucket" "my-s3" {
+  bucket = "bucketb61ab-121"
+}
+
+resource "aws_s3_bucket_versioning" "version" {
+    bucket = aws_s3_bucket.my-s3.id
+    versioning_configuration {
+        status = "Enabled"
+    }
+}
 resource "aws_dynamodb_table" "my-table" {
+    depends_on = [ aws_s3_bucket.my-s3 ]
     name = "b61"
     hash_key = "LockID"
     stream_enabled = true
@@ -14,18 +25,7 @@ resource "aws_dynamodb_table" "my-table" {
 
     attribute {
       name = "LockID"
-      type = S
+      type = "S"
     }
 }
 
-resource "aws_s3_bucket" "my-s3" {
-  bucket = "bucketb61ab"
-  depends_on = [ aws_dynamodb_table.my-table ]
-}
-
-resource "aws_s3_bucket_versioning" "version" {
-    bucket = aws_s3_bucket.my-s3.id
-    versioning_configuration {
-        status = "Enable"
-    }
-}
