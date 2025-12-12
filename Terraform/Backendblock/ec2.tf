@@ -7,7 +7,7 @@ resource "aws_instance" "webserver" {
 }
 
 resource "aws_s3_bucket" "my-s3" {
-  bucket = "bucketb61ab-121"
+  bucket = "dynamob61-43vd234"
 }
 
 resource "aws_s3_bucket_versioning" "version" {
