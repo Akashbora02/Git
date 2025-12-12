@@ -19,7 +19,7 @@ resource "aws_dynamodb_table" "my-table" {
 }
 
 resource "aws_s3_bucket" "my-s3" {
-  bucket = "dynamodb_s3_bucket"
+  bucket = "bucketb61ab"
   depends_on = [ aws_dynamodb_table.my-table ]
 }
 

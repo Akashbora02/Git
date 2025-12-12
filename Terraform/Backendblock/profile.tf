@@ -6,9 +6,9 @@ provider "aws" {
 
 terraform {
   backend "s3" {
-    bucket = "dynamodb_s3_bucket"
+    bucket = "bucketb61ab"
     key = "terraform-tfstate"
-    dynamodb_table = "ab"
+    dynamodb_table = "b61"
     region = "us-east-1"
     profile = "configs"
     shared_credentials_files = [ "/home/akash/.aws/credentials" ]
