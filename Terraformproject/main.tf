@@ -31,10 +31,7 @@ user_data = <<-EOF
               #!/bin/bash
 
               sudo apt update -y
-              sudo apt install -y apache2 git mysql-client
-
-              sudo systemctl enable apache2
-              sudo systemctl start apache2
+              sudo apt install -y git mysql-client
 
               cd /opt/
 
