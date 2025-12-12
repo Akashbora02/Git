@@ -69,7 +69,7 @@ user_data = <<-EOF
               SQL
 
               CONTEXT_FILE="/opt/Git/studentapp/context.xml"
-              sudo sed -i "s|DB_HOST_PLACEHOLDER|g" "$CONTEXT_FILE"
+              sudo sed -i "s|DB_HOST_PLACEHOLDER|DB_HOST|g" "$CONTEXT_FILE"
               echo "User data script completed successfully!"
               echo "$DB_HOST , $DB_USER , $DB_PASS"
             EOF
