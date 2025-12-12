@@ -20,6 +20,7 @@ resource "aws_dynamodb_table" "my-table" {
     depends_on = [ aws_s3_bucket.my-s3 ]
     name = "b61"
     hash_key = "LockID"
+    billing_mode = "PROVISIONED"
     stream_enabled = true
     stream_view_type = "NEW_AND_OLD_IMAGES"
 
