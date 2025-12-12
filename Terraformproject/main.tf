@@ -31,7 +31,7 @@ user_data = <<-EOF
               #!/bin/bash
 
               sudo apt update -y
-              sudo apt install -y git mysql-client
+              sudo apt install -y git mysql-server
 
               cd /opt/
 
@@ -53,7 +53,7 @@ user_data = <<-EOF
                 sleep 10
               done
 
-              mysql -h "$DB_HOST" -u "$DB_USER" -p"$DB_PASS" <<SQL
+              sudo mysql -h "$DB_HOST" -u "$DB_USER" -p"$DB_PASS" <<SQL
               CREATE DATABASE IF NOT EXISTS studentapp;
               USE studentapp;
               CREATE TABLE IF NOT EXISTS students (
