@@ -7,7 +7,7 @@ resource "aws_instance" "webserver" {
 }
 
 resource "aws_dynamodb_table" "my-table" {
-    name = "ab"
+    name = "b61"
     hash_key = "LockID"
     stream_enabled = true
     stream_view_type = "NEW_AND_OLD_IMAGES"
