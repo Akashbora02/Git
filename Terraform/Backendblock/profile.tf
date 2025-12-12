@@ -6,7 +6,7 @@ provider "aws" {
 
  terraform {
   backend "s3" {
-    bucket = "dynamob61-43vd234"
+    bucket = "dynamodb-121"
     key = "terraform-tfstate"
 #    dynamodb_table = "b61"
     use_lockfile = true

@@ -6,7 +6,7 @@ resource "aws_instance" "webserver" {
   disable_api_termination = var.webserver_disable_api_termination
 }
 
-resource "aws_s3_bucket" "my-s3" {
+/* resource "aws_s3_bucket" "my-s3" {
   bucket = "dynamob61-43vd234"
 }
 
@@ -15,9 +15,9 @@ resource "aws_s3_bucket_versioning" "version" {
     versioning_configuration {
         status = "Enabled"
     }
-}
+} */
 resource "aws_dynamodb_table" "my-table" {
-    depends_on = [ aws_s3_bucket.my-s3 ]
+#    depends_on = [ aws_s3_bucket.my-s3 ]
     name = "b61"
     hash_key = "LockID"
     billing_mode = "PROVISIONED"
