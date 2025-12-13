@@ -25,7 +25,6 @@ resource "aws_instance" "webserver" {
   instance_type          = var.webserver_instance_type
   key_name               = var.webserver_key_name
   vpc_security_group_ids = [var.webserver_vpc_security_group_ids]
-  # count                   = var.webserver_count
   disable_api_termination = var.webserver_disable_api_termination
 user_data = <<-EOF
               #!/bin/bash
@@ -75,13 +74,6 @@ user_data = <<-EOF
             EOF
 }
 
-#resource "local_file" "context_xml" {
-#  content = templatefile("${path.module}/context.xml.tpl", {
-#    db_endpoint = aws_db_instance.my_db.address
-#    db_password = var.aws_db_instance_password
-#  })
-#  filename = "Git/studentapp/context.xml"
-#}
 output "webserver_publicip" {
   value = aws_instance.webserver.public_ip
 }
