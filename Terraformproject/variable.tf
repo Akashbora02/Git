@@ -24,13 +24,13 @@ variable "aws_db_instance_engine" {
   default = "mysql"
 }
 variable "aws_db_instance_engine_version" {
-  default = "8.0.43"
+  default = "8.0"
 }
 variable "aws_db_instance_identifier" {
   default = "studentapp"
 }
 variable "aws_db_instance_instance_class" {
-  default = "db.t3.micro"
+  default = "db.t4g.micro"
 }
 variable "aws_db_instance_username" {
   default = "admin"
