@@ -7,7 +7,7 @@ data "aws_subnets" "default" {
     name   = "vpc-id"
     values = [data.aws_vpc.default.id]
   }
-}
+} 
 
 resource "aws_security_group" "my-sg" {
   name   = "my-sg"
