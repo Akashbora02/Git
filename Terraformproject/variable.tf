@@ -7,7 +7,7 @@ variable "webserver_instance_type" {
 variable "webserver_key_name" {
   default = "30july"
 }
-variable "webserver_vpc_security_group_ids" {
+variable "webserver_vpc_security_group_id" {
   default = "sg-0bbfe8e7d4bf3c179"
 }
 #variable "webserver_count" {
