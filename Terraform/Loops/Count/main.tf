@@ -13,6 +13,7 @@ resource "aws_instance" "my-instance" {
   key_name = var.my-instance-key_name
   ami = var.my-instance-ami_list[count.index]
   vpc_security_group_ids =  var.my-instance-security_groups
+  count = length(var.my-instance-ami_list)
 }
 
 output "my-instance-ami-id" {
