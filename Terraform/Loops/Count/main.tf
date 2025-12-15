@@ -17,5 +17,5 @@ resource "aws_instance" "my-instance" {
 }
 
 output "my-instance-ami-id" {
-  value = [for ami-id in var.aws_instance.my-instance : ami-id.id]
+  value = [for ami-id in aws_instance.my-instance : ami-id.id]
 }
