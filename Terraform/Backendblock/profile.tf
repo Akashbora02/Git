@@ -4,7 +4,7 @@ provider "aws" {
   shared_credentials_files = [ "/home/akash/.aws/credentials" ]
 }
 
-/* terraform {
+ terraform {
   backend "s3" {
     bucket = "dynamob61-43vd24"
     key = "terraform-tfstate"
@@ -14,4 +14,4 @@ provider "aws" {
     profile = "test"
     shared_credentials_files = [ "/home/akash/.aws/credentials" ]
   }
-}*/
+}
