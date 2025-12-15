@@ -6,8 +6,8 @@ resource "aws_instance" "webserver" {
   disable_api_termination = var.webserver_disable_api_termination
 }
 
-/* resource "aws_s3_bucket" "my-s3" {
-  bucket = "dynamob61-43vd234"
+ resource "aws_s3_bucket" "my-s3" {
+  bucket = "dynamob61-43vd24"
 }
 
 resource "aws_s3_bucket_versioning" "version" {
@@ -15,7 +15,7 @@ resource "aws_s3_bucket_versioning" "version" {
     versioning_configuration {
         status = "Enabled"
     }
-} */
+} 
 resource "aws_dynamodb_table" "tf_lock" {
   name         = "tf-lock-table"
   billing_mode = "PAY_PER_REQUEST"

@@ -1,5 +1,5 @@
 variable "my-instance-ami_list" {
-  default = ["ami-068c0051b15cdb816" , "ami-0ecb62995f68bb549"]
+  default = ["ami-068c0051b15cdb816", "ami-0ecb62995f68bb549"]
 }
 
 variable "my-instance-inst-type" {
