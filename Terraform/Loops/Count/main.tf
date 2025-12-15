@@ -1,8 +1,8 @@
 resource "aws_iam_user" "iam_user" {
-  name = var.user_list.count.index
+  name = var.user_list[count.index]
   count = length(var.user_list)
 }
 
-output "name" {
- value = aws_iam_user.iam_user.name 
+output "names" {
+ value = [for username in aws_iam_user.iam_user : username.name] 
 }
