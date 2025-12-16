@@ -60,7 +60,7 @@ resource "aws_instance" "webserver" {
   provisioner "remote-exec" {
     inline = [
       "chmod 700 user-data.sh",
-      "sudo sh user-data.sh"
+      "sudo sh /opt/user-data.sh"
     ]
   }
 }
