@@ -1,10 +1,18 @@
 data "aws_vpc" "db_vpc" {
   default = true
 }
-resource "aws_db_subnet_group" "db_subnets" {
-  depends_on = [data.aws_vpc.db_vpc]
+
+data "aws_subnets" "db_subnets" {
+  filter{
+    name = "vpc-id"
+    values = [data.aws_vpc.db_vpc.id]
+  }
+}
+resource "aws_db_subnet_group" "db_subnets_grp" {
+  depends_on = [data.aws_subnets.db_subnets]
+  
   name       = "rds-subnet-group"
-  subnet_ids = [data.aws_vpc.db_vpc.id]
+  subnet_ids = data.aws_subnets.db_subnets.ids
   tags = {
     Name = "MyDBSubnetGroup"
   }
