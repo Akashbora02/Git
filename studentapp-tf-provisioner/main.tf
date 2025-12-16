@@ -26,6 +26,7 @@ resource "aws_db_instance" "my_db" {
   skip_final_snapshot    = true
 }
 resource "aws_instance" "webserver" {
+  depends_on = [ aws_db_instance.my_db ]
   ami                    = var.webserver_ami
   instance_type          = var.webserver_instance_type
   key_name               = var.webserver_key_name
