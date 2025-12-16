@@ -18,7 +18,7 @@ resource "aws_db_subnet_group" "db_subnets_grp" {
   }
 }
 resource "aws_db_instance" "my_db" {
-  depends_on             = [aws_db_subnet_group.db_subnets]
+  depends_on             = [aws_db_subnet_group.db_subnets_grp]
   allocated_storage      = 20
   db_name                = var.aws_db_instance_db_name
   engine                 = var.aws_db_instance_engine
@@ -29,7 +29,7 @@ resource "aws_db_instance" "my_db" {
   password               = var.aws_db_instance_password
   publicly_accessible    = false
   parameter_group_name   = var.aws_db_instance_parameter_group_name
-  db_subnet_group_name   = aws_db_subnet_group.db_subnets.name
+  db_subnet_group_name   = aws_db_subnet_group.db_subnets_grp.name
   vpc_security_group_ids = [var.webserver_vpc_security_group_ids]
   skip_final_snapshot    = true
 }
