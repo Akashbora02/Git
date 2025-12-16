@@ -22,7 +22,7 @@ resource "aws_db_instance" "my_db" {
   publicly_accessible    = false
   parameter_group_name   = var.aws_db_instance_parameter_group_name
   db_subnet_group_name   = aws_db_subnet_group.db_subnets.name
-  vpc_security_group_ids = var.webserver_vpc_security_group_id
+  vpc_security_group_ids = [var.webserver_vpc_security_group_ids]
   skip_final_snapshot    = true
 }
 resource "aws_instance" "webserver" {
@@ -30,7 +30,7 @@ resource "aws_instance" "webserver" {
   ami                     = var.webserver_ami
   instance_type           = var.webserver_instance_type
   key_name                = var.webserver_key_name
-  vpc_security_group_ids  = var.webserver_vpc_security_group_id
+  vpc_security_group_ids  = [var.webserver_vpc_security_group_ids]
   disable_api_termination = var.webserver_disable_api_termination
 
   provisioner "file" {

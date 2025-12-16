@@ -7,7 +7,7 @@ variable "webserver_instance_type" {
 variable "webserver_key_name" {
   default = "16dec"
 }
-variable "webserver_vpc_security_group_id" {
+variable "webserver_vpc_security_group_ids" {
   default = "sg-013ac9044ebaee90e"
 }
 #variable "webserver_count" {
