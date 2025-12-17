@@ -60,11 +60,8 @@ resource "aws_instance" "webserver" {
   provisioner "remote-exec" {
     inline = [
       "chmod +x /home/ubuntu/user-data.sh",
-      "sh user-data.sh",
-      "sudo apt update -y",
-      "sudo apt install nginx -y",
-      "systemctl enable nginx",
-      "systemctl start nginx"
+      "while [ ! -f /var/lib/cloud/instance/boot-finished ]; do sleep 5; done",
+      "sh /home/ubuntu/user-data.sh"
     ]
   }
 }
