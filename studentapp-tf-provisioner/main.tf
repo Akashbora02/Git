@@ -1,4 +1,4 @@
-/*data "aws_vpc" "db_vpc" {
+data "aws_vpc" "db_vpc" {
   default = true
 }
 
@@ -32,9 +32,9 @@ resource "aws_db_instance" "my_db" {
   db_subnet_group_name   = aws_db_subnet_group.db_subnets_grp.name
   vpc_security_group_ids = [var.webserver_vpc_security_group_ids]
   skip_final_snapshot    = true
-}*/
+}
 resource "aws_instance" "webserver" {
-#  depends_on              = [aws_db_instance.my_db]
+  depends_on              = [aws_db_instance.my_db]
   ami                     = var.webserver_ami
   instance_type           = var.webserver_instance_type
   key_name                = var.webserver_key_name
@@ -47,7 +47,7 @@ resource "aws_instance" "webserver" {
   }
 
   provisioner "local-exec" {
-    command = "echo ${self.public_ip} > public_ip.txt"
+    command = "echo ${self.public_ip} >> public_ip.txt"
   }
 
   connection {
@@ -60,13 +60,19 @@ resource "aws_instance" "webserver" {
   provisioner "remote-exec" {
     inline = [
       "chmod +x /home/ubuntu/user-data.sh",
-      "while [ ! -f /var/lib/cloud/instance/boot-finished ]; do sleep 5; done",
-      "sudo sh /home/ubuntu/user-data.sh"
+
+      # Export DB variables so script can read them
+      "export DB_HOST='${aws_db_instance.my_db.address}'",
+      "export DB_USER='${var.aws_db_instance_username}'",
+      "export DB_PASS='${var.aws_db_instance_password}'",
+
+      "sudo -E /home/ubuntu/user-data.sh"
     ]
   }
 }
 
 
-/*output "my_db_arn" {
+output "my_db_arn" {
   value = aws_db_instance.my_db.address
-}*/
+}
+
