@@ -59,14 +59,10 @@ resource "aws_instance" "webserver" {
 
   provisioner "remote-exec" {
     inline = [
-      "chmod +x /home/ubuntu/user-data.sh",
-
-      # Export DB variables so script can read them
-      "export DB_HOST='${aws_db_instance.my_db.address}'",
-      "export DB_USER='${var.aws_db_instance_username}'",
-      "export DB_PASS='${var.aws_db_instance_password}'",
-
-      "sudo -E /home/ubuntu/user-data.sh"
+      "sudo apt update -y",
+      "sudo apt install nginx -y",
+      "systemctl enable nginx",
+      "systemctl start nginx"
     ]
   }
 }
