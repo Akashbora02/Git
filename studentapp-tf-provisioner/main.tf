@@ -27,7 +27,7 @@ resource "aws_db_instance" "my_db" {
   instance_class         = var.aws_db_instance_instance_class
   username               = var.aws_db_instance_username
   password               = var.aws_db_instance_password
-  publicly_accessible    = false
+  publicly_accessible    = true
   parameter_group_name   = var.aws_db_instance_parameter_group_name
   db_subnet_group_name   = aws_db_subnet_group.db_subnets_grp.name
   vpc_security_group_ids = [var.webserver_vpc_security_group_ids]
@@ -47,7 +47,7 @@ resource "aws_instance" "webserver" {
   }
 
   provisioner "local-exec" {
-    command = "echo ${self.public_ip} >> public_ip.txt"
+    command = "echo ${self.public_ip} > public_ip.txt"
   }
 
   connection {
@@ -59,6 +59,8 @@ resource "aws_instance" "webserver" {
 
   provisioner "remote-exec" {
     inline = [
+      "chmod +x /home/ubuntu/user-data.sh",
+      "sh user-data.sh",
       "sudo apt update -y",
       "sudo apt install nginx -y",
       "systemctl enable nginx",
