@@ -61,7 +61,7 @@ resource "aws_instance" "webserver" {
     inline = [
       "chmod +x /home/ubuntu/user-data.sh",
       "while [ ! -f /var/lib/cloud/instance/boot-finished ]; do sleep 5; done",
-      "sh /home/ubuntu/user-data.sh"
+      "sudo sh /home/ubuntu/user-data.sh"
     ]
   }
 }
