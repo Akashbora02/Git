@@ -14,9 +14,6 @@ sh docker-install.sh
 
 cd ..
 docker compose up -d
-DB_HOST="${aws_db_instance.my_db.address}"
-DB_USER="admin"
-DB_PASS="${var.aws_db_instance_password}"
 
 until mysql -h "$DB_HOST" -u "$DB_USER" -p"$DB_PASS" -e "SELECT 1;" 2>/dev/null
 do
