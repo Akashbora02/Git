@@ -1,4 +1,4 @@
-data "aws_vpc" "db_vpc" {
+/*data "aws_vpc" "db_vpc" {
   default = true
 }
 
@@ -32,9 +32,9 @@ resource "aws_db_instance" "my_db" {
   db_subnet_group_name   = aws_db_subnet_group.db_subnets_grp.name
   vpc_security_group_ids = [var.webserver_vpc_security_group_ids]
   skip_final_snapshot    = true
-}
+}*/
 resource "aws_instance" "webserver" {
-  depends_on              = [aws_db_instance.my_db]
+#  depends_on              = [aws_db_instance.my_db]
   ami                     = var.webserver_ami
   instance_type           = var.webserver_instance_type
   key_name                = var.webserver_key_name
