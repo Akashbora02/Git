@@ -70,7 +70,6 @@ resource "aws_instance" "webserver" {
 }
 
 
-output "my_db_arn" {
+/*output "my_db_arn" {
   value = aws_db_instance.my_db.address
-}
-
+}*/
