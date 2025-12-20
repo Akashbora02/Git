@@ -25,7 +25,7 @@ data "aws_vpc" "default" {
   default = true
 }
 
-data "aws_subnets" "default" {
+data "aws_subnets" "default-subnets" {
   filter {
     name   = "vpc-id"
     values = [data.aws_vpc.default.id]
@@ -37,7 +37,7 @@ resource "aws_eks_cluster" "my-cluster" {
   role_arn = aws_iam_role.my-role.arn
 
   vpc_config {
-    subnet_ids = data.aws_subnets.default.ids
+    subnet_ids = data.aws_subnets.default-subnets.ids
   }
 
   depends_on = [
@@ -46,7 +46,7 @@ resource "aws_eks_cluster" "my-cluster" {
 }
 
 resource "aws_iam_role" "my-role-1" {
-  name = var.eks_iam_role_name
+  name = var.eks_node_group_role_name
 
   assume_role_policy = jsonencode({
     Statement = [{
