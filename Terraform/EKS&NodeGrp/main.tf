@@ -26,18 +26,18 @@ data "aws_vpc" "default" {
 }
 
 data "aws_subnets" "default-subnets" {
- /* filter {
+  /* filter {
     name   = "vpc-id"
     values = [data.aws_vpc.default.id]
   } */
   filter {
-    name = "availability-zone"
-    values = [ "us-east-1a", "us-east-1b", "us-east-1c", "us-east-1d", "us-east-1f" ]
+    name   = "availability-zone"
+    values = ["us-east-1a", "us-east-1b", "us-east-1c", "us-east-1d", "us-east-1f"]
   }
 }
 
 data "aws_security_group" "my-sg" {
-    id = var.my_sg
+  id = var.my_sg
 }
 
 resource "aws_eks_cluster" "my-cluster" {
@@ -45,7 +45,7 @@ resource "aws_eks_cluster" "my-cluster" {
   role_arn = aws_iam_role.my-role.arn
 
   vpc_config {
-    subnet_ids = data.aws_subnets.default-subnets.ids
+    subnet_ids         = data.aws_subnets.default-subnets.ids
     security_group_ids = [data.aws_security_group.my-sg.id]
   }
   upgrade_policy {
@@ -57,13 +57,13 @@ resource "aws_eks_cluster" "my-cluster" {
   ]
 }
 
- resource "aws_iam_role" "my-role-1" {
+resource "aws_iam_role" "my-role-1" {
   name = var.eks_node_group_role_name
 
   assume_role_policy = jsonencode({
     Statement = [{
       Action = var.actions
-      Effect  = var.effect
+      Effect = var.effect
       Principal = {
         Service = var.eks_node_group_role_name_service
       }
