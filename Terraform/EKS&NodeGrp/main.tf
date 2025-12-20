@@ -56,7 +56,7 @@ resource "aws_iam_role" "my-role-1" {
     Statement = [{
       Action = var.actions
       Effect  = var.effect
-      Principals = {
+      Principal = {
         Service = var.eks_node_group_role_name_service
       }
     }]
