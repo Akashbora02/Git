@@ -48,13 +48,16 @@ resource "aws_eks_cluster" "my-cluster" {
     subnet_ids = data.aws_subnets.default-subnets.ids
     security_group_ids = [data.aws_security_group.my-sg.id]
   }
+  upgrade_policy {
+    support_type = "STANDARD"
+  }
 
   depends_on = [
     aws_iam_role_policy_attachment.my-AmazonEKSClusterPolicy,
   ]
 }
 
-/* resource "aws_iam_role" "my-role-1" {
+ resource "aws_iam_role" "my-role-1" {
   name = var.eks_node_group_role_name
 
   assume_role_policy = jsonencode({
@@ -106,4 +109,4 @@ resource "aws_eks_node_group" "my-node-grp" {
 
 output "eks_cluster_node_grp" {
   value = aws_eks_node_group.my-node-grp.node_group_name
-} */
+} 
