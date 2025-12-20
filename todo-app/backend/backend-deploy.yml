@@ -14,6 +14,6 @@ spec:
     spec:
       containers:
         - name: backend
-          image: akashbora02/easycrudbe:v2
+          image: akashbora02/todosbe:v1
           ports:
             - containerPort: 8080
