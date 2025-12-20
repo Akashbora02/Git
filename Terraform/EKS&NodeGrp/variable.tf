@@ -57,3 +57,7 @@ variable "eks_node_group_name" {
 variable "instance_types" {
   default = "t3.medium"
 }
+
+variable "my_sg" {
+  default = "sg-013ac9044ebaee90e"
+}

@@ -36,12 +36,17 @@ data "aws_subnets" "default-subnets" {
   }
 }
 
+data "aws_security_group" "my-sg" {
+    id = var.my_sg
+}
+
 resource "aws_eks_cluster" "my-cluster" {
   name     = var.my-cluster
   role_arn = aws_iam_role.my-role.arn
 
   vpc_config {
     subnet_ids = data.aws_subnets.default-subnets.ids
+    security_group_ids = [data.aws_security_group.my-sg.id]
   }
 
   depends_on = [
