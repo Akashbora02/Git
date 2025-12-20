@@ -26,9 +26,13 @@ data "aws_vpc" "default" {
 }
 
 data "aws_subnets" "default-subnets" {
-  filter {
+ /* filter {
     name   = "vpc-id"
     values = [data.aws_vpc.default.id]
+  } */
+  filter {
+    name = "availability-zone"
+    values = [ "us-east-1a", "us-east-1b", "us-east-1c", "us-east-1d", "us-east-1f" ]
   }
 }
 
@@ -50,9 +54,9 @@ resource "aws_iam_role" "my-role-1" {
 
   assume_role_policy = jsonencode({
     Statement = [{
-      actions = var.actions
-      effect  = var.effect
-      principals = {
+      Action = var.actions
+      Effect  = var.effect
+      Principals = {
         Service = var.eks_node_group_role_name_service
       }
     }]
