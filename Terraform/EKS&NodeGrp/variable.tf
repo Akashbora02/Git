@@ -55,7 +55,7 @@ variable "eks_node_group_name" {
 }
 
 variable "instance_types" {
-  default = "t3.medium"
+  default = "c7i-flex.large"
 }
 
 variable "my_sg" {
