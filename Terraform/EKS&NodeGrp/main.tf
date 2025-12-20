@@ -94,3 +94,7 @@ resource "aws_eks_node_group" "my-node-grp" {
     aws_iam_role_policy_attachment.my-AmazonEC2ContainerRegistryReadOnly,
   ]
 }
+
+output "eks_cluster_node_grp" {
+  value = aws_eks_node_group.my-node-grp.node_group_name
+}
