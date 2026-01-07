@@ -62,7 +62,31 @@ pipeline {
     post {
         success {
             echo 'EKS creation successful, triggering Destroy Pipeline'
-            build job: 'Destroy-EKS-Pipeline', wait: false
+//            build job: 'Destroy-EKS-Pipeline', wait: false
+        }
+    }
+    stages{
+        stage('Manual Approval') {
+            steps {
+                input message: 'Do you really want to DESTROY the EKS cluster?'
+            }
+        }
+        stage('Terraform Destroy') {
+            steps {
+                withCredentials([[
+                    $class: 'AmazonWebServicesCredentialsBinding',
+                    credentialsId: 'aws-creds'
+                ]]) {
+                    dir('CreateEKSWithJenkins') {
+                        sh 'terraform destroy -auto-approve'
+                    }
+                }
+            }
+        }
+    }
+    post {
+        success {
+            echo 'Destroy pipeline finished.'
         }
     }
 }
