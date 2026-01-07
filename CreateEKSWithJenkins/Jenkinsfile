@@ -59,4 +59,10 @@ pipeline {
             }
         }
     }
+    post {
+        success {
+            echo 'EKS creation successful, triggering Destroy Pipeline'
+            build job: 'Destroy-EKS-Pipeline', wait: false
+        }
+    }
 }
