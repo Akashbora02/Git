@@ -13,6 +13,8 @@ stages {
                     $class: 'AmazonWebServicesCredentialsBinding',
                     credentialsId: 'aws-creds'
                 ]]) {
+                    sh 'aws eks list-clusters --region $AWS_DEFAULT_REGION'
+
                     script {
                         def clusterExists = sh(
                             script: "aws eks describe-cluster --name ${env.CLUSTER_NAME} --region ${env.AWS_DEFAULT_REGION} >/dev/null 2>&1 && echo 'yes' || echo 'no'",
