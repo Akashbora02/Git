@@ -6,9 +6,24 @@ pipeline {
     }
 
     stages {
+
         stage('Manual Approval') {
             steps {
                 input message: 'Do you really want to DESTROY the EKS cluster?'
+            }
+        }
+
+        stage('Terraform Init') {
+            steps {
+                withCredentials([[
+                    $class: 'AmazonWebServicesCredentialsBinding',
+                    credentialsId: 'aws-creds'
+                ]]) {
+                    // Use the nested folder path
+                    dir('CreateEKSWithJenkins/DestroyEKS') {
+                        sh 'terraform init'
+                    }
+                }
             }
         }
 
@@ -18,7 +33,7 @@ pipeline {
                     $class: 'AmazonWebServicesCredentialsBinding',
                     credentialsId: 'aws-creds'
                 ]]) {
-                    dir('DestroyEKSWithJenkins/DestroyEKS') {
+                    dir('CreateEKSWithJenkins/DestroyEKS') {
                         sh 'terraform destroy -auto-approve'
                     }
                 }
