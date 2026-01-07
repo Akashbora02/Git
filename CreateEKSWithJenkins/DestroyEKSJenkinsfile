@@ -33,7 +33,7 @@ pipeline {
                     $class: 'AmazonWebServicesCredentialsBinding',
                     credentialsId: 'aws-creds'
                 ]]) {
-                    dir('CreateEKSWithJenkins/DestroyEKS') {
+                    dir('CreateEKSWithJenkins') {
                         sh 'terraform destroy -auto-approve'
                     }
                 }
