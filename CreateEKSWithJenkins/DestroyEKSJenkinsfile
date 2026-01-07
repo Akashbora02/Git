@@ -20,7 +20,7 @@ pipeline {
                     credentialsId: 'aws-creds'
                 ]]) {
                     // Use the nested folder path
-                    dir('CreateEKSWithJenkins/DestroyEKS') {
+                    dir('CreateEKSWithJenkins') {
                         sh 'terraform init'
                     }
                 }
