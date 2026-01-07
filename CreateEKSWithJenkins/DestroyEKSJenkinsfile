@@ -3,15 +3,54 @@ pipeline {
 
     environment {
         AWS_DEFAULT_REGION = 'ap-south-1'
+        CLUSTER_NAME = 'EKS'
     }
+stages {
 
-    stages {
+        stage('Check if EKS exists') {
+            steps {
+                withCredentials([[
+                    $class: 'AmazonWebServicesCredentialsBinding',
+                    credentialsId: 'aws-creds'
+                ]]) {
+                    script {
+                        def clusterExists = sh(
+                            script: "aws eks describe-cluster --name ${env.CLUSTER_NAME} --region ${env.AWS_DEFAULT_REGION} >/dev/null 2>&1 && echo 'yes' || echo 'no'",
+                            returnStdout: true
+                        ).trim()
+
+                        if (clusterExists == 'no') {
+                            echo "EKS cluster '${env.CLUSTER_NAME}' does not exist. Skipping destroy."
+                            currentBuild.result = 'SUCCESS'
+                            // Stop the pipeline early
+                            return
+                        } else {
+                            echo "EKS cluster '${env.CLUSTER_NAME}' exists. Proceeding to destroy..."
+                        }
+                    }
+                }
+            }
+        }
 
         stage('Manual Approval') {
             steps {
                 input message: 'Do you really want to DESTROY the EKS cluster?'
             }
         }
+
+        stage('Terraform Init') {
+            steps {
+                withCredentials([[
+                    $class: 'AmazonWebServicesCredentialsBinding',
+                    credentialsId: 'aws-creds'
+                ]]) {
+                    dir('CreateEKSWithJenkins') { // Use same folder as Create pipeline
+                        sh 'terraform init'
+                    }
+                }
+            }
+        }
+
         stage('Terraform Destroy') {
             steps {
                 withCredentials([[
@@ -28,7 +67,7 @@ pipeline {
 
     post {
         success {
-            echo 'EKS destroyed successfully!'
+            echo 'Destroy pipeline finished.'
         }
     }
 }
