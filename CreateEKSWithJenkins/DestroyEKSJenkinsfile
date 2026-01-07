@@ -50,7 +50,6 @@ stages {
                 }
             }
         }
-
         stage('Terraform Destroy') {
             steps {
                 withCredentials([[
@@ -64,7 +63,6 @@ stages {
             }
         }
     }
-
     post {
         success {
             echo 'Destroy pipeline finished.'
