@@ -12,21 +12,6 @@ pipeline {
                 input message: 'Do you really want to DESTROY the EKS cluster?'
             }
         }
-
-        stage('Terraform Init') {
-            steps {
-                withCredentials([[
-                    $class: 'AmazonWebServicesCredentialsBinding',
-                    credentialsId: 'aws-creds'
-                ]]) {
-                    // Use the nested folder path
-                    dir('CreateEKSWithJenkins') {
-                        sh 'terraform init'
-                    }
-                }
-            }
-        }
-
         stage('Terraform Destroy') {
             steps {
                 withCredentials([[
