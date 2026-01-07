@@ -25,9 +25,9 @@ pipeline {
                   terraform init
                 '''
                 }
-                }
             }
         }
+    }
 
         stage('Terraform Plan') {
             steps {
@@ -40,9 +40,9 @@ pipeline {
                   terraform plan
                 '''
                 }
-                }
             }
         }
+    }
 
         stage('Terraform Apply') {
             steps {
@@ -55,17 +55,16 @@ pipeline {
                   terraform apply -auto-approve
                 '''
                 }
-                }
             }
         }
     }
-    post {
-        success {
-            echo 'EKS creation successful, triggering Destroy Pipeline'
+//    post {
+//        success {
+//            echo 'EKS creation successful, triggering Destroy Pipeline'
 //            build job: 'Destroy-EKS-Pipeline', wait: false
-        }
-    }
-    stages{
+//        }
+//    }
+//    stages{
         stage('Manual Approval') {
             steps {
                 input message: 'Do you really want to DESTROY the EKS cluster?'
