@@ -4,7 +4,7 @@ pipeline {
     environment {
         AWS_ACCESS_KEY_ID     = credentials('aws-creds').accessKey
         AWS_SECRET_ACCESS_KEY = credentials('aws-creds').secretKey
-        AWS_DEFAULT_REGION    = "ap-south-1"
+        AWS_DEFAULT_REGION    = "us-east-1"
     }
 
     stages {
@@ -12,31 +12,37 @@ pipeline {
         stage('Checkout Code') {
             steps {
                 git branch: 'main',
-                url: 'https://github.com/<your-username>/terraform-infra.git'
+                url: 'https://github.com/Akashbora02/Git.git'
             }
         }
 
         stage('Terraform Init') {
             steps {
+                dir('CreateEKSWithJenkins'){
                 sh '''
                   terraform init
                 '''
+                }
             }
         }
 
         stage('Terraform Plan') {
             steps {
+                dir('CreateEKSWithJenkins'){
                 sh '''
                   terraform plan
                 '''
+                }
             }
         }
 
         stage('Terraform Apply') {
             steps {
+                dir('CreateEKSWithJenkins'){
                 sh '''
                   terraform apply -auto-approve
                 '''
+                }
             }
         }
     }
